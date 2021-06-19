@@ -1,0 +1,23 @@
+PODS:
+  - PinLayout (1.9.3)
+  - PinStackView (0.1.0):
+    - PinLayout
+
+DEPENDENCIES:
+  - PinStackView (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - PinLayout
+
+EXTERNAL SOURCES:
+  PinStackView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PinLayout: 4d8733121f8687edcc8f00c19bf1379d12808767
+  PinStackView: 360139b3716fae9aa6faa6b624eddf4eaa86eaaf
+
+PODFILE CHECKSUM: ec72c06753d333ab154def7a84faab58e72930a7
+
+COCOAPODS: 1.10.0
