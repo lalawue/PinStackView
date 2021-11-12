@@ -373,6 +373,9 @@ open class PinStackView: UIView {
 
     /// if bounds changed in auto style, invoke callback
     public var autoSizeChangedCallback: ((PinStackView) -> Void)?
+
+    /// callback after layout subviews for other normal subviews
+    public var layoutCallback: ((PinStackView) -> Void)?
     
     // MARK: -
     
@@ -430,6 +433,7 @@ open class PinStackView: UIView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         layout()
+        layoutCallback?(self)
     }
     
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
