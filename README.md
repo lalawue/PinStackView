@@ -78,3 +78,7 @@ using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
         $0.addItem(v4).size(30).grow(2.0).right(20)
     }
 ```
+
+## Demo GIF
+
+[!image](https://github.com/lalawue/PinStackView/blob/master/Images/demo.gif)
