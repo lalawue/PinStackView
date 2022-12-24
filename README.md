@@ -81,4 +81,4 @@ using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
 
 ## Demo GIF
 
-[!image](https://github.com/lalawue/PinStackView/blob/master/Images/demo.gif)
+![image](https://github.com/lalawue/PinStackView/blob/master/Images/demo.gif)
