@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "PinStackView"
-  spec.version      = "0.1.0"
+  spec.version      = "0.2.20221225"
   spec.summary      = "Frame base StackView relies on PinLayout"
   spec.description  = "Frame base StackView relies on PinLayout"
   spec.platform     = :ios

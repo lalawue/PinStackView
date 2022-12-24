@@ -30,7 +30,7 @@ class FixedHorizontalEqualView: UIView {
         $0.backgroundColor = UIColor.green
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .fixed
         $0.axis = .horizontal
         $0.alignment = .center

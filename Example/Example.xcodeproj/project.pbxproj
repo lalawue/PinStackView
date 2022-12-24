@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A2681D329575603000F83E2 /* FixedVerticalSEShrinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2681D229575603000F83E2 /* FixedVerticalSEShrinkView.swift */; };
+		2A2681D529575D84000F83E2 /* PinStackInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2681D429575D84000F83E2 /* PinStackInfoView.swift */; };
 		C1456E3C267DFBED00C4B249 /* FixedEqualViewConrtroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1456E3B267DFBED00C4B249 /* FixedEqualViewConrtroller.swift */; };
 		C1456E40267DFCCE00C4B249 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1456E3F267DFCCE00C4B249 /* BaseViewController.swift */; };
 		C1456E44267DFDA900C4B249 /* FixedSEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1456E43267DFDA900C4B249 /* FixedSEViewController.swift */; };
@@ -21,7 +23,7 @@
 		C198F839267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F831267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift */; };
 		C198F83A267DF5DF009B5C54 /* FixedVerticalEqualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */; };
 		C198F83B267DF5DF009B5C54 /* FixedHorizontalSEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */; };
-		C198F83C267DF5DF009B5C54 /* FixedVerticalSEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F834267DF5DF009B5C54 /* FixedVerticalSEView.swift */; };
+		C198F83C267DF5DF009B5C54 /* FixedVerticalSEGrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F834267DF5DF009B5C54 /* FixedVerticalSEGrowView.swift */; };
 		C198F83D267DF5DF009B5C54 /* AutoVerticalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F835267DF5DF009B5C54 /* AutoVerticalView.swift */; };
 		C198F83E267DF5DF009B5C54 /* AutoHorizontalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F836267DF5DF009B5C54 /* AutoHorizontalView.swift */; };
 		C198F83F267DF5DF009B5C54 /* FixedHorizontalEqualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F837267DF5DF009B5C54 /* FixedHorizontalEqualView.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A2681D229575603000F83E2 /* FixedVerticalSEShrinkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedVerticalSEShrinkView.swift; sourceTree = "<group>"; };
+		2A2681D429575D84000F83E2 /* PinStackInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinStackInfoView.swift; sourceTree = "<group>"; };
 		5B190DC1CA856897CC3BD27E /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9970A35173E052DFE3A9A34B /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		A7A9BD134848BA6ED83104E8 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,7 +53,7 @@
 		C198F831267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHorizontalSESpacing.swift; sourceTree = "<group>"; };
 		C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedVerticalEqualView.swift; sourceTree = "<group>"; };
 		C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHorizontalSEView.swift; sourceTree = "<group>"; };
-		C198F834267DF5DF009B5C54 /* FixedVerticalSEView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedVerticalSEView.swift; sourceTree = "<group>"; };
+		C198F834267DF5DF009B5C54 /* FixedVerticalSEGrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedVerticalSEGrowView.swift; sourceTree = "<group>"; };
 		C198F835267DF5DF009B5C54 /* AutoVerticalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoVerticalView.swift; sourceTree = "<group>"; };
 		C198F836267DF5DF009B5C54 /* AutoHorizontalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoHorizontalView.swift; sourceTree = "<group>"; };
 		C198F837267DF5DF009B5C54 /* FixedHorizontalEqualView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHorizontalEqualView.swift; sourceTree = "<group>"; };
@@ -123,9 +127,11 @@
 				C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */,
 				C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */,
 				C198F831267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift */,
-				C198F834267DF5DF009B5C54 /* FixedVerticalSEView.swift */,
+				C198F834267DF5DF009B5C54 /* FixedVerticalSEGrowView.swift */,
+				2A2681D229575603000F83E2 /* FixedVerticalSEShrinkView.swift */,
 				C198F835267DF5DF009B5C54 /* AutoVerticalView.swift */,
 				C198F836267DF5DF009B5C54 /* AutoHorizontalView.swift */,
+				2A2681D429575D84000F83E2 /* PinStackInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -276,8 +282,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C198F839267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift in Sources */,
+				2A2681D529575D84000F83E2 /* PinStackInfoView.swift in Sources */,
 				C198F83D267DF5DF009B5C54 /* AutoVerticalView.swift in Sources */,
 				C198F838267DF5DF009B5C54 /* AutoSizeView.swift in Sources */,
+				2A2681D329575603000F83E2 /* FixedVerticalSEShrinkView.swift in Sources */,
 				C1456E44267DFDA900C4B249 /* FixedSEViewController.swift in Sources */,
 				C198F83A267DF5DF009B5C54 /* FixedVerticalEqualView.swift in Sources */,
 				C198F843267DF635009B5C54 /* Then.swift in Sources */,
@@ -285,7 +293,7 @@
 				C198F81D267DF42C009B5C54 /* ViewController.swift in Sources */,
 				C198F83F267DF5DF009B5C54 /* FixedHorizontalEqualView.swift in Sources */,
 				C198F819267DF42C009B5C54 /* AppDelegate.swift in Sources */,
-				C198F83C267DF5DF009B5C54 /* FixedVerticalSEView.swift in Sources */,
+				C198F83C267DF5DF009B5C54 /* FixedVerticalSEGrowView.swift in Sources */,
 				C198F83B267DF5DF009B5C54 /* FixedHorizontalSEView.swift in Sources */,
 				C198F81B267DF42C009B5C54 /* SceneDelegate.swift in Sources */,
 				C1456E3C267DFBED00C4B249 /* FixedEqualViewConrtroller.swift in Sources */,

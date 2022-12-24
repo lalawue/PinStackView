@@ -27,7 +27,7 @@ class FixedVerticalEqualView: UIView {
         $0.backgroundColor = UIColor.brown
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .fixed
         $0.axis = .vertical
         $0.alignment = .center

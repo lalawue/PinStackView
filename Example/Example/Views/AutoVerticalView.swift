@@ -30,7 +30,7 @@ class AutoVerticalView: UIView {
         $0.backgroundColor = UIColor.cyan
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .auto
         $0.axis = .vertical
         $0.alignment = .center
@@ -49,8 +49,8 @@ class AutoVerticalView: UIView {
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray.cgColor
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        stackView.autoSizeChangedCallback = { [weak self] stacview in
-            guard let sv = self?.superview else {
+        stackView.layoutCallback = { [weak self] stacview, changed in
+            guard let sv = self?.superview, changed else {
                 return
             }
             let f = sv.bounds

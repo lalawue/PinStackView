@@ -27,7 +27,7 @@ class FixedHorizontalSEView: UIView {
         $0.setTitle("String", for: .normal)
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .fixed
         $0.axis = .horizontal
         $0.alignment = .center
@@ -36,6 +36,7 @@ class FixedHorizontalSEView: UIView {
         $0.addItem(v1).left(10).size(ratio: 0.25, 0.6)
         $0.addItem(v2).width(20).height(8).left(10)
         $0.addItem(v3).right(10)
+        $0.spancer = "    "
     }
     
     override init(frame: CGRect) {

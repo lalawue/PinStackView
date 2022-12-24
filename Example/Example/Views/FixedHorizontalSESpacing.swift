@@ -22,7 +22,7 @@ class FixedHorizontalSESpacing: UIView {
         $0.backgroundColor = UIColor.brown
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .fixed
         $0.axis = .horizontal
         $0.alignment = .center
@@ -31,6 +31,7 @@ class FixedHorizontalSESpacing: UIView {
         $0.addItem(v1).height(40).grow(1.0).left(10)
         $0.addItem(v2).height(40).grow(1.0)
         $0.addItem(v3).height(40).grow(1.0).right(10)
+        $0.spancer = "    "
     }
     
     override init(frame: CGRect) {

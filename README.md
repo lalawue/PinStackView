@@ -11,6 +11,7 @@ PinStackView was a StackView relies on [PinLayout](https://github.com/layoutBox/
 - has inner padding
 - has equal distribution like UIStackView
 - has auto style with dynamic length in axis direction
+- has grow/shrink
 
 ## Usage
 
@@ -43,11 +44,11 @@ $ open Example.xcworkspace
 - alignment: cross axis direction, you can specify view's alignment by alignSelf()
 - spacing: spacing between items in axis direction
 - padding: items will layout after padding
-- autoSizeChangedCallback: in .auto style, when PinStackView bounds changed, it will callback for you to change superview's layout if needed
+- layoutCallback: call back after every layout, will pass in true when size changed
 
 ### PinStackItemInfo
 
-PinStackItemInfo was each item's layout definition, you will get instance after addItem(), you can chaned interface below
+PinStackItemInfo was each item's layout definition, you will get instance after addItem()
 
 - top(): top margin, points or inner height ratio after padding
 - bottom(): bottom margin, points or inner height ratio after padding
@@ -57,22 +58,23 @@ PinStackItemInfo was each item's layout definition, you will get instance after 
 - height(): points or inner height ratio after padding
 - size(): high priority than width() and height(), points or ratio after padding
 - alignSelf(): high priroty than PinStackView's alignment, only for this item
-- grow(): in .fixed style and .start / .end distribution, it means item using dynamic length in axis direction after all fixed items length acumulated; no meanings in .equal distribution or .auto style
+- grow(): in .fixed style and .start / .end distribution, means when all items length less than container's length, the grow one will take all extra space with ratio
+- shrink(): in .fixed style and.start / .end distribution, means when all items length greater than container's length, then shrink one will shrink extra sapce whth ratio
 
 ## Coding Example
 
 using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
 
 ```swift
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .auto
         $0.axis = .horizontal
         $0.alignment = .center
         $0.distribution = .start
         $0.spacing = 10
         $0.addItem(v1).left(20)
-        $0.addItem(v2).size(20)
-        $0.addItem(v3)
-        $0.addItem(v4).size(30).right(20)
+        $0.addItem(v2).size(20).shrik(2.0)
+        $0.addItem(v3).grow(1.0) // with ratio 1.0 / (1.0 + 2.0)
+        $0.addItem(v4).size(30).grow(2.0).right(20)
     }
 ```

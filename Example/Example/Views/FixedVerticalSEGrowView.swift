@@ -1,22 +1,25 @@
 //
-//  AutoHorizontalView.swift
+//  FixedVerticalSEGrowView.swift
 //  Example
 //
-//  Created by lalawue on 2021/5/15.
+//  Created by lalawue on 2021/5/14.
 //
 
 import UIKit
 import PinStackView
 
-class AutoHorizontalView: UIView {
+class FixedVerticalSEGrowView: UIView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
         $0.text = "Hello"
     }
     
-    let v2 = UIView().then {
+    let v2 = UILabel().then {
         $0.backgroundColor = UIColor.green
+        $0.numberOfLines = 0
+        $0.textAlignment = .center
+        $0.text = "32\nx\n32"
     }
     
     let v3 = UIButton().then {
@@ -26,20 +29,16 @@ class AutoHorizontalView: UIView {
         $0.setTitle("ClickMe", for: .normal)
     }
     
-    let v4 = UIView().then {
-        $0.backgroundColor = UIColor.cyan
-    }
-    
     lazy var stackView = PinStackInfoView().then {
-        $0.style = .auto
-        $0.axis = .horizontal
+        $0.style = .fixed
+        $0.axis = .vertical
         $0.alignment = .center
-        $0.distribution = .start
+        $0.distribution = .end
         $0.spacing = 10
-        $0.addItem(v1).left(20)
-        $0.addItem(v2).size(20)
-        $0.addItem(v3)
-        $0.addItem(v4).size(30).right(20)
+        $0.addItem(v1).top(10)
+        $0.addItem(v2).size(32).grow(1)
+        $0.addItem(v3).bottom(10)
+        $0.spancer = "    "
     }
     
     override init(frame: CGRect) {
@@ -48,31 +47,19 @@ class AutoHorizontalView: UIView {
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray.cgColor
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        stackView.layoutCallback = { [weak self] stackview, changed in
-            guard let sv = self?.superview, changed else {
-                return
-            }
-            let f = sv.bounds
-            sv.bounds = CGRect(x: f.origin.x, y: f.origin.y, width: f.size.width, height: f.size.height + 0.001)
-            sv.bounds = f
-        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func onTap() {
-        v4.isHidden = !v4.isHidden
-        stackView.markDirty()
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-        stackView.pin.vertically().sizeToFit(.height)
+        stackView.pin.all()
     }
     
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return stackView.sizeThatFits(size)
+    @objc private func onTap() {
+        v2.isHidden = !v2.isHidden
+        stackView.markDirty()
     }
 }

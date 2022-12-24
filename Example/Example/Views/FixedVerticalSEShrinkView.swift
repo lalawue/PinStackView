@@ -1,5 +1,5 @@
 //
-//  FixedVerticalSEView.swift
+//  FixedVerticalSEShrinkView.swift
 //  Example
 //
 //  Created by lalawue on 2021/5/14.
@@ -8,15 +8,18 @@
 import UIKit
 import PinStackView
 
-class FixedVerticalSEView: UIView {
+class FixedVerticalSEShrinkView: UIView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
         $0.text = "Hello"
     }
     
-    let v2 = UIView().then {
+    let v2 = UILabel().then {
         $0.backgroundColor = UIColor.green
+        $0.numberOfLines = 0
+        $0.text = "30\nx\n90"
+        $0.textAlignment = .center
     }
     
     let v3 = UIButton().then {
@@ -26,15 +29,16 @@ class FixedVerticalSEView: UIView {
         $0.setTitle("ClickMe", for: .normal)
     }
     
-    lazy var stackView = PinStackView().then {
+    lazy var stackView = PinStackInfoView().then {
         $0.style = .fixed
         $0.axis = .vertical
         $0.alignment = .center
-        $0.distribution = .end
+        $0.distribution = .start
         $0.spacing = 10
         $0.addItem(v1).top(10)
-        $0.addItem(v2).size(8).grow(1)
+        $0.addItem(v2).width(30).height(90).shrink(1)
         $0.addItem(v3).bottom(10)
+        $0.spancer = "    "
     }
     
     override init(frame: CGRect) {

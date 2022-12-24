@@ -27,7 +27,7 @@ fileprivate class SizeValue {
 
 /** layout info
  */
-public class PinStackItemInfo {
+open class PinStackItemInfo {
     
     /// margins
     fileprivate var _top = Value()
@@ -44,8 +44,11 @@ public class PinStackItemInfo {
     /// aligment in corss direction
     fileprivate var _alignSelf: PinStackViewAlignment?
     
-    /// dynamic  value / total value, greater than 0
+    /// dynamic  value / total value, greater than 0, only for style fixed
     fileprivate var _grow = CGFloat(0)
+
+    /// dynamic value / total value, greater than 0, only for style fixed
+    fileprivate var _shrink = CGFloat(0)
     
     // MARK: -
     
@@ -54,7 +57,7 @@ public class PinStackItemInfo {
 
     /// top margin
     @discardableResult
-    public func top(_ value: CGFloat) -> PinStackItemInfo {
+    open func top(_ value: CGFloat) -> PinStackItemInfo {
         _top.value = value
         _top.unit = .point
         return self
@@ -62,7 +65,7 @@ public class PinStackItemInfo {
 
     /// top margin inside padding
     @discardableResult
-    public func top(ratio: CGFloat) -> PinStackItemInfo {
+    open func top(ratio: CGFloat) -> PinStackItemInfo {
         _top.value = regularRatio(ratio)
         _top.unit = .ratio
         return self
@@ -70,7 +73,7 @@ public class PinStackItemInfo {
     
     /// bottom margin
     @discardableResult
-    public func bottom(_ value: CGFloat) -> PinStackItemInfo {
+    open func bottom(_ value: CGFloat) -> PinStackItemInfo {
         _bottom.value = value
         _bottom.unit = .point
         return self
@@ -78,7 +81,7 @@ public class PinStackItemInfo {
 
     /// bottom margin inside padding
     @discardableResult
-    public func bottom(ratio: CGFloat) -> PinStackItemInfo {
+    open func bottom(ratio: CGFloat) -> PinStackItemInfo {
         _bottom.value = regularRatio(ratio)
         _bottom.unit = .ratio
         return self
@@ -86,7 +89,7 @@ public class PinStackItemInfo {
     
     /// left margin
     @discardableResult
-    public func left(_ value: CGFloat) -> PinStackItemInfo {
+    open func left(_ value: CGFloat) -> PinStackItemInfo {
         _left.value = value
         _left.unit = .point
         return self
@@ -94,7 +97,7 @@ public class PinStackItemInfo {
 
     /// left margin inside padding
     @discardableResult
-    public func left(ratio: CGFloat) -> PinStackItemInfo {
+    open func left(ratio: CGFloat) -> PinStackItemInfo {
         _left.value = regularRatio(ratio)
         _left.unit = .ratio
         return self
@@ -102,7 +105,7 @@ public class PinStackItemInfo {
     
     /// right margin
     @discardableResult
-    public func right(_ value: CGFloat) -> PinStackItemInfo {
+    open func right(_ value: CGFloat) -> PinStackItemInfo {
         _right.value = value
         _right.unit = .point
         return self
@@ -110,7 +113,7 @@ public class PinStackItemInfo {
     
     /// right margin inside padding
     @discardableResult
-    public func right(ratio: CGFloat) -> PinStackItemInfo {
+    open func right(ratio: CGFloat) -> PinStackItemInfo {
         _right.value = regularRatio(ratio)
         _right.unit = .ratio
         return self
@@ -118,7 +121,7 @@ public class PinStackItemInfo {
     
     /// specifiy size, has hight priority
     @discardableResult
-    public func size(_ width: CGFloat, _ height: CGFloat) -> PinStackItemInfo {
+    open func size(_ width: CGFloat, _ height: CGFloat) -> PinStackItemInfo {
         let s = _size ?? SizeValue()
         s.value = CGSize(width: width, height: height)
         s.unit = .point
@@ -127,7 +130,7 @@ public class PinStackItemInfo {
     }
     
     @discardableResult
-    public func size(_ length: CGFloat) -> PinStackItemInfo {
+    open func size(_ length: CGFloat) -> PinStackItemInfo {
         let s = _size ?? SizeValue()
         s.value = CGSize(width: length, height: length)
         s.unit = .point
@@ -136,7 +139,7 @@ public class PinStackItemInfo {
     }
 
     @discardableResult
-    public func size(_ size: CGSize) -> PinStackItemInfo {
+    open func size(_ size: CGSize) -> PinStackItemInfo {
         let s = _size ?? SizeValue()
         s.value = size
         s.unit = .point
@@ -146,7 +149,7 @@ public class PinStackItemInfo {
     
     /// when hratio as .nan，keep aspect ratio, otherwise using seperated ratio for width / height
     @discardableResult
-    public func size(ratio: CGFloat, _ hratio: CGFloat = .nan ) -> PinStackItemInfo {
+    open func size(ratio: CGFloat, _ hratio: CGFloat = .nan ) -> PinStackItemInfo {
         let s = _size ?? SizeValue()
         if hratio.isNaN {
             s.value = CGSize(width: regularRatio(ratio), height: .nan)
@@ -160,7 +163,7 @@ public class PinStackItemInfo {
     
     /// width
     @discardableResult
-    public func width(_ width: CGFloat) -> PinStackItemInfo {
+    open func width(_ width: CGFloat) -> PinStackItemInfo {
         let w = _width ?? Value()
         w.value = width
         w.unit = .point
@@ -170,7 +173,7 @@ public class PinStackItemInfo {
     
     /// width ratio after padding
     @discardableResult
-    public func width(ratio: CGFloat) -> PinStackItemInfo {
+    open func width(ratio: CGFloat) -> PinStackItemInfo {
         let w = _width ?? Value()
         w.value = regularRatio(ratio)
         w.unit = .ratio
@@ -180,7 +183,7 @@ public class PinStackItemInfo {
     
     /// height
     @discardableResult
-    public func height(_ height: CGFloat) -> PinStackItemInfo {
+    open func height(_ height: CGFloat) -> PinStackItemInfo {
         let h = _height ?? Value()
         h.value = height
         h.unit = .point
@@ -190,7 +193,7 @@ public class PinStackItemInfo {
 
     /// height ratio after padding
     @discardableResult
-    public func height(ratio: CGFloat) -> PinStackItemInfo {
+    open func height(ratio: CGFloat) -> PinStackItemInfo {
         let h = _height ?? Value()
         h.value = regularRatio(ratio)
         h.unit = .ratio
@@ -200,15 +203,22 @@ public class PinStackItemInfo {
     
     /// self cross aligment
     @discardableResult
-    public func alignSelf(_ align: PinStackViewAlignment) -> PinStackItemInfo {
+    open func alignSelf(_ align: PinStackViewAlignment) -> PinStackItemInfo {
         _alignSelf = align
         return self
     }
     
     /// grow ratio for axis directon
     @discardableResult
-    public func grow(_ value: CGFloat) -> PinStackItemInfo {
+    open func grow(_ value: CGFloat) -> PinStackItemInfo {
         _grow = max(0, value)
+        return self
+    }
+    
+    /// shrink ratio for axis directon
+    @discardableResult
+    open func shrink(_ value: CGFloat) -> PinStackItemInfo {
+        _shrink = max(0, value)
         return self
     }
     
@@ -334,14 +344,17 @@ public enum PinStackViewLayoutStyle {
     case auto
 }
 
-/// for calculating dynamic length, with total grow value
-fileprivate struct ExtraDynamic {
+/// for calculating dynamic length, with total grow & shrink value
+fileprivate struct DynamicSizeInfo {
     
-    /// dynamic length
+    /// total length
     let extra: CGFloat
     
     /// total grow
     let grow: CGFloat
+
+    /// total shrink
+    let shrink: CGFloat
 }
 
 // MARK: -
@@ -354,34 +367,31 @@ open class PinStackView: UIView {
     fileprivate var iteminfos = NSMapTable<UIView,PinStackItemInfo>.weakToStrongObjects()
 
     /// default fixed style, has highest priority
-    public var style = PinStackViewLayoutStyle.fixed
+    open var style = PinStackViewLayoutStyle.fixed
 
     /// axis direciton, default horizontal
-    public var axis = PinStackViewAxis.horizontal
+    open var axis = PinStackViewAxis.horizontal
 
     /// axis distribution, default from start, and auto style not support equal, will change to start
-    public var distribution = PinStackViewDistribution.start
+    open var distribution = PinStackViewDistribution.start
 
     /// cross direction style, default value
-    public var alignment = PinStackViewAlignment.stretch
+    open var alignment = PinStackViewAlignment.stretch
     
     /// axis direciton spacing between items, default 0
-    public var spacing = CGFloat(0)
+    open var spacing = CGFloat(0)
     
     /// padding before items caculation
-    public var padding = UIEdgeInsets.zero
+    open var padding = UIEdgeInsets.zero
 
-    /// if bounds changed in auto style, invoke callback
-    public var autoSizeChangedCallback: ((PinStackView) -> Void)?
-
-    /// callback after layout subviews for other normal subviews
-    public var layoutCallback: ((PinStackView) -> Void)?
+    /// callback after layout subviews for other normal subviews, true when size changed
+    open var layoutCallback: ((PinStackView, Bool) -> Void)?
     
     // MARK: -
     
     /// add views for calculation
     @discardableResult
-    public func addItem(_ item: UIView) -> PinStackItemInfo {
+    open func addItem(_ item: UIView) -> PinStackItemInfo {
         let info = iteminfos.object(forKey: item) ?? PinStackItemInfo()
         addSubview(item)
         iteminfos.setObject(info, forKey: item)
@@ -391,7 +401,7 @@ open class PinStackView: UIView {
     
     /// insert view for calculation
     @discardableResult
-    public func insertItem(_ item: UIView, below: UIView) -> PinStackItemInfo {
+    open func insertItem(_ item: UIView, below: UIView) -> PinStackItemInfo {
         let info = iteminfos.object(forKey: item) ?? PinStackItemInfo()
         insertSubview(item, belowSubview: below)
         iteminfos.setObject(info, forKey: item)
@@ -400,25 +410,25 @@ open class PinStackView: UIView {
     }
 
     /// remove view for calculation
-    public func removeItem(_ item: UIView) {
+    open func removeItem(_ item: UIView) {
         iteminfos.removeObject(forKey: item)
         item.removeFromSuperview()
         markDirty()
     }
 
     /// 通过 view 获取描述的 item
-    public func itemForView(_ view: UIView) -> PinStackItemInfo? {
+    open func itemForView(_ view: UIView) -> PinStackItemInfo? {
         return iteminfos.object(forKey: view)
     }
     
     @discardableResult
-    public func define(_ closure: (_ stackView: Self) throws -> Void) rethrows -> Self {
+    open func define(_ closure: (_ stackView: Self) throws -> Void) rethrows -> Self {
         try closure(self)
         return self
     }
     
     /// mark re-calcualtion then layout
-    public func markDirty() {
+    open func markDirty() {
         setNeedsLayout()
     }
     
@@ -426,14 +436,15 @@ open class PinStackView: UIView {
         return bounds.size
     }
     
-    public override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
+    open override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         return sizeThatFits(targetSize)
     }
     
     open override func layoutSubviews() {
         super.layoutSubviews()
+        let size = self.frame.size
         layout()
-        layoutCallback?(self)
+        layoutCallback?(self, self.frame.size != size)
     }
     
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -531,15 +542,15 @@ open class PinStackView: UIView {
     
     /// fixed stack view, distributed as start, end, apply grow ratio
     private func fixedStartEnd(_ inner_width: CGFloat, _ inner_height: CGFloat) {
-        let extra = fixedSEApply(inner_width, inner_height, false, ExtraDynamic(extra: 0, grow: 0))
+        let tot_info = fixedSEApply(inner_width, inner_height, false, DynamicSizeInfo(extra: 0, grow: 0, shrink: 0))
         let dynamic_length: CGFloat
         if axis == .horizontal {
-            dynamic_length = inner_width - extra.extra
+            dynamic_length = inner_width - tot_info.extra
         } else {
-            dynamic_length = inner_height - extra.extra
+            dynamic_length = inner_height - tot_info.extra
         }
-        let input_extra = ExtraDynamic(extra: dynamic_length, grow: extra.grow)
-        fixedSEApply(inner_width, inner_height, true, input_extra)
+        let dynamic_info = DynamicSizeInfo(extra: dynamic_length, grow: tot_info.grow, shrink: tot_info.shrink)
+        fixedSEApply(inner_width, inner_height, true, dynamic_info)
     }
     
     /// for measure and apply, collect fixed content length, total grow when apply false, then apply those dynamic length
@@ -547,7 +558,7 @@ open class PinStackView: UIView {
     private func fixedSEApply(_ inner_width: CGFloat,
                               _ inner_height: CGFloat,
                               _ apply: Bool,
-                              _ extra: ExtraDynamic) -> ExtraDynamic {
+                              _ dn_info: DynamicSizeInfo) -> DynamicSizeInfo {
         var in_startx: CGFloat
         var in_starty: CGFloat
         let views: [UIView]
@@ -562,8 +573,9 @@ open class PinStackView: UIView {
             views = subviews.filter { !$0.isHidden }.reversed()
         }
 
-        var fixed_length = CGFloat(0)
+        var tot_length = CGFloat(0)
         var grow = CGFloat(0)
+        var shrink = CGFloat(0)
         var begin = CGFloat(0)
 
         for view in views {
@@ -578,36 +590,35 @@ open class PinStackView: UIView {
             let cross_width = inner_width - margin_left - margin_right
             let cross_height = inner_height - margin_top - margin_bottom
             
-            let limit_width: CGFloat
-            let limit_height: CGFloat
+//            let limit_width: CGFloat
+//            let limit_height: CGFloat
             
-            if distribution == .start {
-                limit_width = inner_width - (in_startx + begin * spacing + margin_left + margin_right)
-                limit_height = inner_height - (in_starty + begin * spacing + margin_top + margin_bottom)
-            } else {
-                limit_width = in_startx - begin * spacing - margin_right - margin_left
-                limit_height = in_starty - begin * spacing - margin_bottom - margin_top
-            }
+//            if distribution == .start {
+//                limit_width = inner_width - (in_startx + begin * spacing + margin_left + margin_right)
+//                limit_height = inner_height - (in_starty + begin * spacing + margin_top + margin_bottom)
+//            } else {
+//                limit_width = in_startx - begin * spacing - margin_right - margin_left
+//                limit_height = in_starty - begin * spacing - margin_bottom - margin_top
+//            }
             
             let size: CGSize
             if axis == .horizontal {
-                let width = info._grow > 0 ? 0 : limit_width
-                let s = calcViewSize(view, info, width, cross_height, inner_width, inner_height)
+                let s = calcViewSize(view, info, .greatestFiniteMagnitude, cross_height, inner_width, inner_height)
                 if apply {
-                    size = calcFixedSEDynamicSize(axis: axis, size: s, info: info, extra: extra)
+                    size = calcFixedSEDynamicSize(axis: axis, size: s, info: info, dn_info: dn_info)
                 } else {
-                    size = info._grow > 0 ? CGSize(width:0, height: s.height) : s
+                    size = s
                 }
             } else {
-                let height = info._grow > 0 ? 0 : limit_height
-                let s = calcViewSize(view, info, cross_width, height, inner_width, inner_height)
+                let s = calcViewSize(view, info, cross_width, .greatestFiniteMagnitude, inner_width, inner_height)
                 if apply {
-                    size = calcFixedSEDynamicSize(axis: axis, size: s, info: info, extra: extra)
+                    size = calcFixedSEDynamicSize(axis: axis, size: s, info: info, dn_info: dn_info)
                 } else {
-                    size = info._grow > 0 ? CGSize(width: s.width, height: 0) : s
+                    size = s
                 }
             }
             grow += info._grow
+            shrink += info._shrink
 
             let ox: CGFloat
             let oy: CGFloat
@@ -635,10 +646,7 @@ open class PinStackView: UIView {
                 } else {
                     in_startx -= item_width
                 }
-                fixed_length += margin_left + margin_right + begin * spacing
-                if info._grow <= 0 {
-                    fixed_length += size.width
-                }
+                tot_length += margin_left + margin_right + begin * spacing + size.width
             } else {
                 if apply {
                     switch info._alignSelf ?? alignment {
@@ -654,15 +662,12 @@ open class PinStackView: UIView {
                 } else {
                     in_starty -= item_height
                 }
-                fixed_length += margin_top + margin_bottom + begin * spacing
-                if info._grow <= 0 {
-                    fixed_length += size.height
-                }
+                tot_length += margin_top + margin_bottom + begin * spacing + size.height
             }
             begin = 1
         }
         // return total length, total grow
-        return ExtraDynamic(extra: fixed_length, grow: grow)
+        return DynamicSizeInfo(extra: tot_length, grow: grow, shrink: shrink)
     }
     
     // MARK: - Auto
@@ -679,14 +684,12 @@ open class PinStackView: UIView {
             let outer_length = inner_length + padding.left + padding.right
             if apply && frame.width != outer_length {
                 pin.width(outer_length)
-                autoSizeChangedCallback?(self)
             }
             return CGSize(width: outer_length, height: inner_height + padding.top + padding.bottom)
         } else {
             let outer_length = inner_length + padding.top + padding.bottom
             if apply && frame.height != outer_length {
                 pin.height(outer_length)
-                autoSizeChangedCallback?(self)
             }
             return CGSize(width: inner_width + padding.left + padding.right, height: outer_length)
         }
@@ -755,12 +758,11 @@ open class PinStackView: UIView {
     
     // MARK: - Helper
     
-    /** calculate view size
-     *  - size has highest priority, calc by outer width / height after padding
-     *  - if no size，call view's sizeThatFits()
-     *  - if item info has width / height, overrite sizeThatFits result
-     *  - restrict fixed style views' width or height
-     */
+    /// calculate view size
+    /// - size has highest priority, calc by outer width / height after padding
+    /// - if no size，call view's sizeThatFits()
+    /// - if item info has width / height, overrite sizeThatFits result
+    /// - restrict fixed style views' width or height
     private func calcViewSize(_ view: UIView,
                               _ info: PinStackItemInfo,
                               _ uwidth: CGFloat,
@@ -785,10 +787,16 @@ open class PinStackView: UIView {
         if let hh = h, s.height != hh {
             oh = hh
         }
-        if ow > uwidth {
+        // .isInfinite and .greatestFiniteMagnitude meanings '0'
+        // otherwise it will take all space, but the space is finite
+        if ow.isInfinite || ow == .greatestFiniteMagnitude {
+            ow = 0
+        } else if ow > uwidth {
             ow = uwidth
         }
-        if oh > uheight {
+        if oh.isInfinite || oh == .greatestFiniteMagnitude {
+            oh = 0
+        } else if oh > uheight {
             oh = uheight
         }
         return CGSize(width: ow, height: oh)
@@ -798,22 +806,30 @@ open class PinStackView: UIView {
     private func calcFixedSEDynamicSize(axis: PinStackViewAxis,
                                         size: CGSize,
                                         info: PinStackItemInfo,
-                                        extra: ExtraDynamic) -> CGSize {
-        guard extra.extra > 0 && extra.grow > 0 && info._grow > 0 else {
-            return size
+                                        dn_info: DynamicSizeInfo) -> CGSize {
+        if dn_info.extra > 0 && dn_info.grow > 0 && info._grow > 0 {
+            let length = dn_info.extra * (info._grow / dn_info.grow)
+            if axis == .horizontal {
+                return CGSize(width: size.width + length, height: size.height)
+            } else {
+                return CGSize(width: size.width, height: size.height + length)
+            }
         }
-        let length = extra.extra * (info._grow / extra.grow)
-        if axis == .horizontal {
-            return CGSize(width: max(0, length), height: size.height)
-        } else {
-            return CGSize(width: size.width, height: max(0, length))
+        if dn_info.extra < 0 && dn_info.shrink > 0 && info._shrink > 0 {
+            let length = dn_info.extra * (info._shrink / dn_info.shrink)
+            if axis == .horizontal {
+                return CGSize(width: size.width + length, height: size.height)
+            } else {
+                return CGSize(width: size.width, height: size.height + length)
+            }
         }
+        return size
     }
     
     /// debug output
     private func debugLog(_ msg: String) {
         #if DEBUG
-        print("[PinStackView] \(msg)")
+        debugPrint("[PinStackView] \(msg)")
         #endif
     }
 }
