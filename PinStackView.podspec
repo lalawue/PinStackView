@@ -21,8 +21,7 @@ Pod::Spec.new do |spec|
 
   spec.source       = { :git => "http://github.com/lalawue/PinStackView.git", :tag => "#{spec.version}" }
 
-  spec.source_files  = "Classes", "Classes/*"
-  spec.exclude_files = "Classes/Exclude"
+  spec.source_files  = 'PinStackView/Classes/**/*'
 
   spec.ios.deployment_target = '9.0'
   spec.swift_version = '4.2'
