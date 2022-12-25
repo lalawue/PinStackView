@@ -66,7 +66,7 @@ PinStackItemInfo was each item's layout definition, you will get instance after 
 using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
 
 ```swift
-    lazy var stackView = PinStackInfoView().then {
+    lazy var stackView = PinStackView().then {
         $0.style = .auto
         $0.axis = .horizontal
         $0.alignment = .center

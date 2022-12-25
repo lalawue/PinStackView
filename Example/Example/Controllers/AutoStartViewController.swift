@@ -9,13 +9,9 @@ import UIKit
 
 class AutoStartViewController: BaseViewController {
     
-    lazy var v1 = AutoVerticalView().then {
-        $0.stackView.nameLabel.text = "auto size vertical"
-    }
+    lazy var v1 = AutoVerticalView(frame: .zero, name: "auto size vertical")
     
-    lazy var v2 = AutoHorizontalView().then {
-        $0.stackView.nameLabel.text = "auto size horizontal"
-    }
+    lazy var v2 = AutoHorizontalView(frame: .zero, name: "auto size horizontal")
     
     override func viewDidLoad() {
         super.viewDidLoad()

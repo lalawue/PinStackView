@@ -29,7 +29,7 @@ class FixedVerticalSEGrowView: UIView {
         $0.setTitle("ClickMe", for: .normal)
     }
     
-    lazy var stackView = PinStackInfoView().then {
+    lazy var stackView = PinStackView().then {
         $0.style = .fixed
         $0.axis = .vertical
         $0.alignment = .center
@@ -38,15 +38,15 @@ class FixedVerticalSEGrowView: UIView {
         $0.addItem(v1).top(10)
         $0.addItem(v2).size(32).grow(1)
         $0.addItem(v3).bottom(10)
-        $0.spancer = "    "
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, name: String) {
         super.init(frame: frame)
         addSubview(stackView)
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray.cgColor
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        DemoUIHelper.appendInfo(view: stackView, name: name, spancer: "    ")
     }
     
     required init?(coder: NSCoder) {

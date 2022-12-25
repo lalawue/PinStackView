@@ -9,24 +9,17 @@ import UIKit
 
 class FixedSEViewController: BaseViewController {
     
-    lazy var v1 = FixedHorizontalSEView().then {
-        $0.stackView.nameLabel.text = "distribution start"
-    }
-    lazy var v2 = FixedHorizontalSEView().then {
+    lazy var v1 = FixedHorizontalSEView(frame: .zero, name: "distribution start")
+
+    lazy var v2 = FixedHorizontalSEView(frame: .zero, name: "distribution end").then {
         $0.stackView.distribution = .end
-        $0.stackView.nameLabel.text = "distribution end"
     }
     
-    lazy var v3 = FixedHorizontalSESpacing().then {
-        $0.stackView.nameLabel.text = "grow equal"
-    }
+    lazy var v3 = FixedHorizontalSESpacing(frame: .zero, name: "grow equal")
     
-    lazy var v4 = FixedVerticalSEGrowView().then {
-        $0.stackView.nameLabel.text = "grow middle"
-    }
-    lazy var v5 = FixedVerticalSEShrinkView().then {
-        $0.stackView.nameLabel.text = "shrink middle"
-    }
+    lazy var v4 = FixedVerticalSEGrowView(frame: .zero, name: "grow middle")
+
+    lazy var v5 = FixedVerticalSEShrinkView(frame: .zero, name: "shrink middle")
     
     override func viewDidLoad() {
         super.viewDidLoad()

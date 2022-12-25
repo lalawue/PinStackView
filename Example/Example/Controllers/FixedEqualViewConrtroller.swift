@@ -9,13 +9,9 @@ import UIKit
 
 class FixedEqualViewConrtroller: BaseViewController {
 
-    lazy var v1 = FixedHorizontalEqualView().then {
-        $0.stackView.nameLabel.text = "horizontal equal"
-    }
+    lazy var v1 = FixedHorizontalEqualView(frame: .zero, name: "horizontal equal")
     
-    lazy var v2 = FixedVerticalEqualView().then {
-        $0.stackView.nameLabel.text = "vertical equal"
-    }
+    lazy var v2 = FixedVerticalEqualView(frame: .zero, name: "vertical equal")
     
     override func viewDidLoad() {
         super.viewDidLoad()

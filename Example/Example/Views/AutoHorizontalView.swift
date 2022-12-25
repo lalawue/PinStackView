@@ -30,7 +30,7 @@ class AutoHorizontalView: UIView {
         $0.backgroundColor = UIColor.cyan
     }
     
-    lazy var stackView = PinStackInfoView().then {
+    lazy var stackView = PinStackView().then {
         $0.style = .auto
         $0.axis = .horizontal
         $0.alignment = .center
@@ -42,7 +42,7 @@ class AutoHorizontalView: UIView {
         $0.addItem(v4).size(30).right(20)
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, name: String) {
         super.init(frame: frame)
         addSubview(stackView)
         layer.borderWidth = 1
@@ -56,6 +56,7 @@ class AutoHorizontalView: UIView {
             sv.bounds = CGRect(x: f.origin.x, y: f.origin.y, width: f.size.width, height: f.size.height + 0.001)
             sv.bounds = f
         }
+        DemoUIHelper.appendInfo(view: stackView, name: name)
     }
     
     required init?(coder: NSCoder) {

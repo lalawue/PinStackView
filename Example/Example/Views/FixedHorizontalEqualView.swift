@@ -30,7 +30,7 @@ class FixedHorizontalEqualView: UIView {
         $0.backgroundColor = UIColor.green
     }
     
-    lazy var stackView = PinStackInfoView().then {
+    lazy var stackView = PinStackView().then {
         $0.style = .fixed
         $0.axis = .horizontal
         $0.alignment = .center
@@ -41,12 +41,13 @@ class FixedHorizontalEqualView: UIView {
         $0.addItem(v4)
     }
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, name: String) {
         super.init(frame: frame)
         addSubview(stackView)
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray.cgColor
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        DemoUIHelper.appendInfo(view: stackView, name: name)
     }
     
     required init?(coder: NSCoder) {
