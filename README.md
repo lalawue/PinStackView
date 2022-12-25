@@ -2,7 +2,7 @@
 
 # Introduction
 
-PinStackView was a StackView relies on [PinLayout](https://github.com/layoutBox/PinLayout.git).
+PinStackView was a Frame base StackView relies on [PinLayout](https://github.com/layoutBox/PinLayout.git).
 
 ## Features
 
