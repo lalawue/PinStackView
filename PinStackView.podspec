@@ -14,12 +14,12 @@ Pod::Spec.new do |spec|
   spec.description  = "Frame base StackView relies on PinLayout"
   spec.platform     = :ios
 
-  spec.homepage     = "http://github.com/lalawue/PinStackView"
+  spec.homepage     = "https://github.com/lalawue/PinStackView"
   spec.license      = "MIT"
 
   spec.author       = "lalawue"
 
-  spec.source       = { :git => "http://github.com/lalawue/PinStackView.git", :tag => "#{spec.version}" }
+  spec.source       = { :git => "https://github.com/lalawue/PinStackView.git", :tag => "#{spec.version}" }
 
   spec.source_files  = 'PinStackView/Classes/**/*'
 
