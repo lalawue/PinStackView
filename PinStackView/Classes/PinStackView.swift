@@ -7,6 +7,13 @@
 import UIKit
 import PinLayout
 
+/// debug output
+fileprivate func debugLog(_ msg: String) {
+    #if DEBUG
+    debugPrint("[PinStackView] \(msg)")
+    #endif
+}
+
 fileprivate enum Unit: Int, Equatable {
     case point = 0
     case ratio
@@ -365,7 +372,7 @@ open class PinStackView: UIView {
 
     /// store item layout info
     fileprivate var iteminfos = NSMapTable<UIView,PinStackItemInfo>.weakToStrongObjects()
-
+    
     /// default fixed style, has highest priority
     open var style = PinStackViewLayoutStyle.fixed
 
@@ -385,7 +392,7 @@ open class PinStackView: UIView {
     open var padding = UIEdgeInsets.zero
 
     /// callback after layout subviews for other normal subviews, true when size changed
-    open var layoutCallback: ((PinStackView, Bool) -> Void)?
+    open var layoutCallback: ((PinStackView?, Bool) -> Void)?
     
     // MARK: -
     
@@ -396,6 +403,7 @@ open class PinStackView: UIView {
         addSubview(item)
         iteminfos.setObject(info, forKey: item)
         markDirty()
+        KvoHelper.addObserver(view: item)
         return info
     }
     
@@ -406,6 +414,7 @@ open class PinStackView: UIView {
         insertSubview(item, belowSubview: below)
         iteminfos.setObject(info, forKey: item)
         markDirty()
+        KvoHelper.addObserver(view: item)
         return info
     }
 
@@ -414,6 +423,7 @@ open class PinStackView: UIView {
         iteminfos.removeObject(forKey: item)
         item.removeFromSuperview()
         markDirty()
+        KvoHelper.removeObserver(view: item)
     }
 
     /// 通过 view 获取描述的 item
@@ -444,7 +454,8 @@ open class PinStackView: UIView {
         super.layoutSubviews()
         let size = self.frame.size
         layout()
-        layoutCallback?(self, self.frame.size != size)
+        weak var weakSelf = self
+        layoutCallback?(weakSelf, self.frame.size != size)
     }
     
     open override func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -825,11 +836,60 @@ open class PinStackView: UIView {
         }
         return size
     }
+
+}
+
+/// KVO key
+fileprivate var pinstack_kvohelper_observation_key = "pinstack_kvohelper_observation_key"
+
+/// item view KVO helper
+fileprivate class KvoHelper: NSObject {
     
-    /// debug output
-    private func debugLog(_ msg: String) {
-        #if DEBUG
-        debugPrint("[PinStackView] \(msg)")
-        #endif
+    fileprivate let observation: NSKeyValueObservation
+    
+    deinit {
+        observation.invalidate()
+    }
+    
+    init(observation: NSKeyValueObservation) {
+        self.observation = observation
+    }
+    
+    // MARK: - static
+    
+    static func addObserver(view: UIView) {
+        if nil == view.pinstack_kvohelper {
+            let ref = view.observe(\UIView.isHidden, changeHandler: Self.changeHandler)
+            view.pinstack_kvohelper = KvoHelper(observation: ref)
+        }
+    }
+    
+    static func removeObserver(view: UIView) {
+        if let _ = view.pinstack_kvohelper {
+            view.pinstack_kvohelper = nil
+        }
+    }
+
+    private static func changeHandler(_ view: UIView, _ value: NSKeyValueObservedChange<Bool>) {
+        guard let _ = view.pinstack_kvohelper else {
+            return
+        }
+        if let sview = view.superview as? PinStackView,
+           let _ = sview.itemForView(view)
+        {
+            sview.markDirty()
+        }
+    }
+}
+
+extension UIView {
+
+    fileprivate var pinstack_kvohelper: KvoHelper? {
+        get {
+            return objc_getAssociatedObject(self, &pinstack_kvohelper_observation_key) as? KvoHelper
+        }
+        set {
+            objc_setAssociatedObject(self, &pinstack_kvohelper_observation_key, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
 }

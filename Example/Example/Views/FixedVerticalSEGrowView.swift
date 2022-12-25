@@ -60,6 +60,5 @@ class FixedVerticalSEGrowView: UIView {
     
     @objc private func onTap() {
         v2.isHidden = !v2.isHidden
-        stackView.markDirty()
     }
 }

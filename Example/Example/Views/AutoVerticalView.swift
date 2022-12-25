@@ -49,7 +49,7 @@ class AutoVerticalView: UIView {
         layer.borderWidth = 1
         layer.borderColor = UIColor.gray.cgColor
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        stackView.layoutCallback = { [weak self] stacview, changed in
+        stackView.layoutCallback = { [weak self] _, changed in
             guard let sv = self?.superview, changed else {
                 return
             }
@@ -66,7 +66,6 @@ class AutoVerticalView: UIView {
 
     @objc private func onTap() {
         v2.isHidden = !v2.isHidden
-        stackView.markDirty()
     }
     
     override func layoutSubviews() {

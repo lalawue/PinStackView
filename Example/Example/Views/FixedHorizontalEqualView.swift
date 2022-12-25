@@ -61,7 +61,6 @@ class FixedHorizontalEqualView: UIView {
             v1.text = "Hello"
         }
         v4.isHidden = !v4.isHidden
-        stackView.markDirty()
     }
     
     override func layoutSubviews() {

@@ -12,6 +12,7 @@ PinStackView was a StackView relies on [PinLayout](https://github.com/layoutBox/
 - has equal distribution like UIStackView
 - has auto style with dynamic length in axis direction
 - has grow/shrink
+- KVO item views 'isHidden'
 
 ## Usage
 

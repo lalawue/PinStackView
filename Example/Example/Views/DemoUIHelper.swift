@@ -32,6 +32,9 @@ class DemoUIHelper {
         let oldCallback = view.layoutCallback
         view.layoutCallback = { sview, changed in
             oldCallback?(sview, changed)
+            guard let `sview` = sview else {
+                return
+            }
             do {
                 // layout name label
                 nameLabel.pin.left()
@@ -44,8 +47,8 @@ class DemoUIHelper {
                 // collect item info, output to infoLabel, then layout
                 var text = "[bounds size]\(spancer)"
                 var index = 0
-                for v in view.subviews {
-                    guard let _ = view.itemForView(v) else {
+                for v in sview.subviews {
+                    guard let _ = sview.itemForView(v) else {
                         continue
                     }
                     index += 1
@@ -58,7 +61,7 @@ class DemoUIHelper {
                 }
                 infoLabel.text = text
                 let s = infoLabel.pin.left()
-                    .top(to: view.edge.bottom)
+                    .top(to: sview.edge.bottom)
                     .marginTop(1)
                 if spancer == "\n" {
                     s.width(100).sizeToFit(.width)

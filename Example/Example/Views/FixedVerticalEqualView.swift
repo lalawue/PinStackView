@@ -52,7 +52,6 @@ class FixedVerticalEqualView: UIView {
     
     @objc private func onTap() {
         v3.isHidden = !v3.isHidden
-        stackView.markDirty()
     }
     
     override func layoutSubviews() {
