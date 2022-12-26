@@ -33,7 +33,7 @@ class FixedHorizontalSEView: UIView {
         $0.alignment = .center
         $0.distribution = .start
         $0.spacing = 10
-        $0.addItem(v1).left(10).size(ratio: 0.25, 0.6)
+        $0.addItem(v1).left(10).width(ratio: 0.25).height(ratio: 0.6)//.size(ratio: 0.25, 0.6)
         $0.addItem(v2).width(20).height(8).left(10)
         $0.addItem(v3).right(10)
     }
