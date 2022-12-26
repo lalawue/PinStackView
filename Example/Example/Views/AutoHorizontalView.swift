@@ -27,8 +27,11 @@ class AutoHorizontalView: UIView {
     }
     
     let v4 = UIView().then {
+        $0.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         $0.backgroundColor = UIColor.cyan
     }
+    
+    var changeSize = 0
     
     lazy var stackView = PinStackView().then {
         $0.style = .auto
@@ -39,7 +42,7 @@ class AutoHorizontalView: UIView {
         $0.addItem(v1).left(20)
         $0.addItem(v2).size(20)
         $0.addItem(v3)
-        $0.addItem(v4).size(30).right(20)
+        $0.addItem(v4).right(20)
     }
     
     init(frame: CGRect, name: String) {
@@ -64,7 +67,17 @@ class AutoHorizontalView: UIView {
     }
     
     @objc private func onTap() {
-        v4.isHidden = !v4.isHidden
+        if changeSize > 0 {
+            if changeSize > 1 {
+                changeSize = 1
+                v4.frame = CGRect(origin: .zero, size: CGSize(width: 90, height: v4.frame.height))
+            } else {
+                changeSize = 2
+                v4.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: v4.frame.height))
+            }
+        } else {
+            v4.isHidden = !v4.isHidden
+        }
     }
     
     override func layoutSubviews() {

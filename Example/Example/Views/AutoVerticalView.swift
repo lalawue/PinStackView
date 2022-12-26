@@ -30,6 +30,8 @@ class AutoVerticalView: UIView {
         $0.backgroundColor = UIColor.cyan
     }
     
+    var changed = 0
+    
     lazy var stackView = PinStackView().then {
         $0.style = .auto
         $0.axis = .vertical
@@ -38,9 +40,9 @@ class AutoVerticalView: UIView {
         $0.spacing = 10
         $0.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         $0.addItem(v1)
-        $0.addItem(v2).size(10)
+        $0.addItem(v2).size(25)
         $0.addItem(v3).alignSelf(.end)
-        $0.addItem(v4).size(30)
+        $0.addItem(v4).size(40)
     }
     
     init(frame: CGRect, name: String) {
@@ -65,7 +67,17 @@ class AutoVerticalView: UIView {
     }
 
     @objc private func onTap() {
-        v2.isHidden = !v2.isHidden
+        if changed > 0 {
+            if changed > 1 {
+                changed = 1
+                stackView.itemForView(v3)?.alignSelf(.end)
+            } else {
+                changed = 2
+                stackView.itemForView(v3)?.alignSelf(.start)
+            }
+        } else {
+            v2.isHidden = !v2.isHidden
+        }
     }
     
     override func layoutSubviews() {

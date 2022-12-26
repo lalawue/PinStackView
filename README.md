@@ -12,7 +12,8 @@ PinStackView was a Frame base StackView relies on [PinLayout](https://github.com
 - has equal distribution like UIStackView
 - has auto style with dynamic length in axis direction
 - has grow/shrink
-- KVO item views 'isHidden'
+- observ item layout properties
+- KVO item views 'isHidden', 'bounds.size'
 
 ## Usage
 
@@ -57,10 +58,15 @@ PinStackItemInfo was each item's layout definition, you will get instance after 
 - right(): right margin, points or inner width ratio after padding
 - width(): points or inner width ratio after padding
 - height(): points or inner height ratio after padding
-- size(): high priority than width() and height(), points or ratio after padding
+- maxWidth(): max points or inner width ratio after padding, high priority than width()
+- maxHeight(): max points or inner height ratio after padding, high priority than height()
+- minWidth(): min points or inner width ratio after padding, high priority than width()
+- minHeight(): min points or inner height ratio after padding, high priority than height()
+- size(): highest priority than width(), height(), max/min width & height, points or ratio after padding
 - alignSelf(): high priroty than PinStackView's alignment, only for this item
 - grow(): in .fixed style and .start / .end distribution, means when all items length less than container's length, the grow one will take all extra space with ratio
 - shrink(): in .fixed style and.start / .end distribution, means when all items length greater than container's length, then shrink one will shrink extra sapce whth ratio
+- reset(): reset to default
 
 ## Coding Example
 

@@ -36,6 +36,8 @@ fileprivate class SizeValue {
  */
 open class PinStackItemInfo {
     
+    fileprivate weak var _view: PinStackView?
+    
     /// margins
     fileprivate var _top = Value()
     fileprivate var _bottom = Value()
@@ -76,8 +78,8 @@ open class PinStackItemInfo {
     @inline(__always)
     fileprivate func setProperty(_ property: inout Value?, _ unit: Unit, _ float: CGFloat) -> PinStackItemInfo {
         let np = property ?? Value()
-        np.unit = unit
-        np.value = float
+        changeValue(&np.unit, unit)
+        changeValue(&np.value, float)
         property = np
         return self
     }
@@ -87,16 +89,24 @@ open class PinStackItemInfo {
         let nsz = sz ?? SizeValue()
         nsz.unit = unit
         if unit == .point {
-            nsz.value = CGSize(width: w, height: h)
+            changeValue(&nsz.value, CGSize(width: w, height: h))
         } else {
             if h.isNaN {
-                nsz.value = CGSize(width: regularRatio(w), height: .nan)
+                changeValue(&nsz.value, CGSize(width: regularRatio(w), height: .nan))
             } else {
-                nsz.value = CGSize(width: regularRatio(w), height: regularRatio(h))
+                changeValue(&nsz.value, CGSize(width: regularRatio(w), height: regularRatio(h)))
             }
         }
         sz = nsz
         return self
+    }
+    
+    @inline(__always)
+    fileprivate func changeValue<T: Equatable>(_ a: inout T, _ b: T) {
+        if a != b {
+            a = b
+            _view?.markDirty()
+        }
     }
     
     // MARK: -
@@ -238,21 +248,25 @@ open class PinStackItemInfo {
     /// self cross aligment
     @discardableResult
     open func alignSelf(_ align: PinStackViewAlignment) -> PinStackItemInfo {
+        if let alignSelf = _alignSelf, alignSelf == align {
+            return self
+        }
         _alignSelf = align
+        _view?.markDirty()
         return self
     }
     
     /// grow ratio for axis directon (0, inf]
     @discardableResult
     open func grow(_ value: CGFloat) -> PinStackItemInfo {
-        _grow = max(0, value)
+        changeValue(&_grow, max(0, value))
         return self
     }
     
     /// shrink ratio for axis directon, (0, inf)
     @discardableResult
     open func shrink(_ value: CGFloat) -> PinStackItemInfo {
-        _shrink = max(0, value)
+        changeValue(&_shrink, max(0, value))
         return self
     }
 
@@ -414,14 +428,16 @@ open class PinStackView: UIView {
     
     // MARK: -
     
-    open func createItemInfo() -> PinStackItemInfo {
-        return PinStackItemInfo()
+    open func createItemInfo(_ view: PinStackView) -> PinStackItemInfo {
+        let info = PinStackItemInfo()
+        info._view = view
+        return info
     }
     
     /// add views for calculation
     @discardableResult
     open func addItem(_ item: UIView) -> PinStackItemInfo {
-        let info = itemInfos.object(forKey: item) ?? createItemInfo()
+        let info = itemInfos.object(forKey: item) ?? createItemInfo(self)
         addSubview(item)
         itemInfos.setObject(info, forKey: item)
         markDirty()
@@ -432,7 +448,7 @@ open class PinStackView: UIView {
     /// insert view for calculation
     @discardableResult
     open func insertItem(_ item: UIView, below: UIView) -> PinStackItemInfo {
-        let info = itemInfos.object(forKey: item) ?? createItemInfo()
+        let info = itemInfos.object(forKey: item) ?? createItemInfo(self)
         insertSubview(item, belowSubview: below)
         itemInfos.setObject(info, forKey: item)
         markDirty()
@@ -875,22 +891,26 @@ open class PinStackView: UIView {
 /// item view KVO helper
 fileprivate class KvoHelper: NSObject {
     
-    fileprivate let observation: NSKeyValueObservation
+    fileprivate let kvoHidden: NSKeyValueObservation
+    fileprivate let kvoSize: NSKeyValueObservation
     
     deinit {
-        observation.invalidate()
+        kvoHidden.invalidate()
+        kvoSize.invalidate()
     }
     
-    init(observation: NSKeyValueObservation) {
-        self.observation = observation
+    init(kvoHidden: NSKeyValueObservation, kvoSize: NSKeyValueObservation) {
+        self.kvoHidden = kvoHidden
+        self.kvoSize = kvoSize
     }
     
     // MARK: - static
     
     static func addObserver(view: UIView) {
         if nil == view.pinstack_kvohelper {
-            let ref = view.observe(\UIView.isHidden, changeHandler: Self.hiddenChangeHandler)
-            view.pinstack_kvohelper = KvoHelper(observation: ref)
+            let refHidden = view.observe(\UIView.isHidden, options: [.new], changeHandler: Self.hiddenChangeHandler)
+            let refSize = view.observe(\UIView.bounds, options: [.new], changeHandler: Self.sizeChangeHandler)
+            view.pinstack_kvohelper = KvoHelper(kvoHidden: refHidden, kvoSize: refSize)
         }
     }
     
@@ -906,6 +926,26 @@ fileprivate class KvoHelper: NSObject {
         }
         if let sview = view.superview as? PinStackView,
            let _ = sview.itemForView(view)
+        {
+            sview.markDirty()
+        }
+    }
+    
+    /// only observ style .auto
+    private static func sizeChangeHandler(_ view: UIView, _ value: NSKeyValueObservedChange<CGRect>) {
+        guard let _ = view.pinstack_kvohelper else {
+            return
+        }
+        guard let sview = view.superview as? PinStackView,
+              sview.style == .auto,
+              let _ = sview.itemForView(view),
+              let oldValue = value.oldValue,
+              let newValue = value.newValue else
+        {
+            return
+        }
+        if (sview.axis == .horizontal && oldValue.size.width != newValue.size.width) ||
+            (sview.axis == .vertical && oldValue.size.height != newValue.size.height)
         {
             sview.markDirty()
         }
