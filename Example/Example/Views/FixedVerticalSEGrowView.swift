@@ -40,6 +40,8 @@ class FixedVerticalSEGrowView: UIView {
         $0.addItem(v3).bottom(10)
     }
     
+    fileprivate var changed = false
+    
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
         addSubview(stackView)
@@ -59,6 +61,11 @@ class FixedVerticalSEGrowView: UIView {
     }
     
     @objc private func onTap() {
-        v2.isHidden = !v2.isHidden
+        changed = !changed
+        if changed {
+            stackView.itemForView(v2)?.grow(0)
+        } else {
+            stackView.itemForView(v2)?.grow(1)
+        }
     }
 }

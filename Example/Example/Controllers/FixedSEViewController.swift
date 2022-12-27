@@ -20,9 +20,9 @@ class FixedSEViewController: BaseViewController {
 
     lazy var v3 = FixedHorizontalSESpacing(frame: .zero, name: "grow equal")
 
-    lazy var v4 = FixedVerticalSEGrowView(frame: .zero, name: "grow middle")
+    lazy var v4 = FixedVerticalSEGrowView(frame: .zero, name: "toggle grow middle")
 
-    lazy var v5 = FixedVerticalSEShrinkView(frame: .zero, name: "shrink middle")
+    lazy var v5 = FixedVerticalSEShrinkView(frame: .zero, name: "toggle shrink middle")
     
     override func viewDidLoad() {
         super.viewDidLoad()

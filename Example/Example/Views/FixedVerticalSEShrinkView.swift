@@ -18,7 +18,7 @@ class FixedVerticalSEShrinkView: UIView {
     let v2 = UILabel().then {
         $0.backgroundColor = UIColor.green
         $0.numberOfLines = 0
-        $0.text = "30\nx\n90"
+        $0.text = "30\nx\n75"
         $0.textAlignment = .center
     }
     
@@ -36,9 +36,11 @@ class FixedVerticalSEShrinkView: UIView {
         $0.distribution = .start
         $0.spacing = 10
         $0.addItem(v1).top(10)
-        $0.addItem(v2).width(30).height(90).shrink(1)
+        $0.addItem(v2).width(30).height(75).shrink(1)
         $0.addItem(v3).bottom(10)
     }
+    
+    fileprivate var changed = false
     
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
@@ -59,6 +61,11 @@ class FixedVerticalSEShrinkView: UIView {
     }
     
     @objc private func onTap() {
-        v2.isHidden = !v2.isHidden
+        changed = !changed
+        if changed {
+            stackView.itemForView(v2)?.shrink(0)
+        } else {
+            stackView.itemForView(v2)?.shrink(1)
+        }
     }
 }

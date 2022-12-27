@@ -70,16 +70,16 @@ open class PinStackItemInfo {
     
     @inline(__always)
     fileprivate func setProperty(_ np: inout Value, _ unit: Unit, _ float: CGFloat) -> PinStackItemInfo {
-        np.unit = unit
-        np.value = float
+        markDirtyIfChanged(&np.unit, unit)
+        markDirtyIfChanged(&np.value, float)
         return self
     }
     
     @inline(__always)
     fileprivate func setProperty(_ property: inout Value?, _ unit: Unit, _ float: CGFloat) -> PinStackItemInfo {
         let np = property ?? Value()
-        changeValue(&np.unit, unit)
-        changeValue(&np.value, float)
+        markDirtyIfChanged(&np.unit, unit)
+        markDirtyIfChanged(&np.value, float)
         property = np
         return self
     }
@@ -87,14 +87,14 @@ open class PinStackItemInfo {
     @inline(__always)
     fileprivate func setSize(_ sz: inout SizeValue?, _ unit: Unit, _ w: CGFloat, _ h: CGFloat) -> PinStackItemInfo {
         let nsz = sz ?? SizeValue()
-        nsz.unit = unit
+        markDirtyIfChanged(&nsz.unit, unit)
         if unit == .point {
-            changeValue(&nsz.value, CGSize(width: w, height: h))
+            markDirtyIfChanged(&nsz.value, CGSize(width: w, height: h))
         } else {
             if h.isNaN {
-                changeValue(&nsz.value, CGSize(width: regularRatio(w), height: .nan))
+                markDirtyIfChanged(&nsz.value, CGSize(width: regularRatio(w), height: .nan))
             } else {
-                changeValue(&nsz.value, CGSize(width: regularRatio(w), height: regularRatio(h)))
+                markDirtyIfChanged(&nsz.value, CGSize(width: regularRatio(w), height: regularRatio(h)))
             }
         }
         sz = nsz
@@ -102,11 +102,17 @@ open class PinStackItemInfo {
     }
     
     @inline(__always)
-    fileprivate func changeValue<T: Equatable>(_ a: inout T, _ b: T) {
+    fileprivate func markDirtyIfChanged<T: Equatable>(_ a: inout T, _ b: T) {
         if a != b {
             a = b
-            _view?.markDirty()
+            if let view = _view {
+                view.markDirty()
+            }
         }
+    }
+    
+    fileprivate init(_ view: PinStackView?) {
+        self._view = view
     }
     
     // MARK: -
@@ -259,33 +265,15 @@ open class PinStackItemInfo {
     /// grow ratio for axis directon (0, inf]
     @discardableResult
     open func grow(_ value: CGFloat) -> PinStackItemInfo {
-        changeValue(&_grow, max(0, value))
+        markDirtyIfChanged(&_grow, max(0, value))
         return self
     }
     
     /// shrink ratio for axis directon, (0, inf)
     @discardableResult
     open func shrink(_ value: CGFloat) -> PinStackItemInfo {
-        changeValue(&_shrink, max(0, value))
+        markDirtyIfChanged(&_shrink, max(0, value))
         return self
-    }
-
-    // reset to default value
-    open func reset() {
-        _top = Value()
-        _left = Value()
-        _bottom = Value()
-        _right = Value()
-        _width = nil
-        _height = nil
-        _max_width = nil
-        _max_height = nil
-        _min_width = nil
-        _min_height = nil
-        _size = nil
-        _grow = 0
-        _shrink = 0
-        _alignSelf = nil
     }
     
     // MARK: -
@@ -310,8 +298,8 @@ open class PinStackItemInfo {
     }
 
     @inline(__always)
-    fileprivate func size(_ property: SizeValue?, _ width: CGFloat, _ height: CGFloat) -> CGSize? {
-        guard let s = property else {
+    fileprivate func size(_ s: SizeValue?, _ width: CGFloat, _ height: CGFloat) -> CGSize? {
+        guard let s = s else {
             return nil
         }
         let wr = s.value.width
@@ -353,7 +341,7 @@ public enum PinStackViewDistribution {
     /// from end
     case end
 
-    /// same length along axis, seperated by spacing, ignore grow, append margin
+    /// same length along axis, seperated by spacing, ignore grow/shrink, append margin
     case equal
 }
 
@@ -376,7 +364,7 @@ public enum PinStackViewAlignment {
 /// axis length style, for fixed or dynamic by its subviews
 public enum PinStackViewLayoutStyle {
 
-    /// fixed in axis direction
+    /// fixed length in axis direction
     case fixed
     
     /// dynamic length in axis direction,
@@ -428,16 +416,10 @@ open class PinStackView: UIView {
     
     // MARK: -
     
-    open func createItemInfo(_ view: PinStackView) -> PinStackItemInfo {
-        let info = PinStackItemInfo()
-        info._view = view
-        return info
-    }
-    
     /// add views for calculation
     @discardableResult
     open func addItem(_ item: UIView) -> PinStackItemInfo {
-        let info = itemInfos.object(forKey: item) ?? createItemInfo(self)
+        let info = itemInfos.object(forKey: item) ?? PinStackItemInfo(self)
         addSubview(item)
         itemInfos.setObject(info, forKey: item)
         markDirty()
@@ -448,14 +430,14 @@ open class PinStackView: UIView {
     /// insert view for calculation
     @discardableResult
     open func insertItem(_ item: UIView, below: UIView) -> PinStackItemInfo {
-        let info = itemInfos.object(forKey: item) ?? createItemInfo(self)
+        let info = itemInfos.object(forKey: item) ?? PinStackItemInfo(self)
         insertSubview(item, belowSubview: below)
         itemInfos.setObject(info, forKey: item)
         markDirty()
         KvoHelper.addObserver(view: item)
         return info
     }
-
+    
     /// remove view for calculation
     open func removeItem(_ item: UIView) {
         itemInfos.removeObject(forKey: item)
@@ -464,7 +446,19 @@ open class PinStackView: UIView {
         KvoHelper.removeObserver(view: item)
     }
 
-    /// 通过 view 获取描述的 item
+    /// remake item's info, otherwise add it
+    @discardableResult
+    open func remakeItem(_ item: UIView) -> PinStackItemInfo {
+        if let _ = itemInfos.object(forKey: item) {
+            let info = PinStackItemInfo(self)
+            itemInfos.setObject(info, forKey: item)
+            return info
+        } else {
+            return addItem(item)
+        }
+    }
+
+    /// get view's item info
     open func itemForView(_ view: UIView) -> PinStackItemInfo? {
         return itemInfos.object(forKey: view)
     }
@@ -891,26 +885,22 @@ open class PinStackView: UIView {
 /// item view KVO helper
 fileprivate class KvoHelper: NSObject {
     
-    fileprivate let kvoHidden: NSKeyValueObservation
-    fileprivate let kvoSize: NSKeyValueObservation
+    fileprivate let observation: NSKeyValueObservation
     
     deinit {
-        kvoHidden.invalidate()
-        kvoSize.invalidate()
+        observation.invalidate()
     }
     
-    init(kvoHidden: NSKeyValueObservation, kvoSize: NSKeyValueObservation) {
-        self.kvoHidden = kvoHidden
-        self.kvoSize = kvoSize
+    init(observation: NSKeyValueObservation) {
+        self.observation = observation
     }
     
     // MARK: - static
     
     static func addObserver(view: UIView) {
         if nil == view.pinstack_kvohelper {
-            let refHidden = view.observe(\UIView.isHidden, options: [.new], changeHandler: Self.hiddenChangeHandler)
-            let refSize = view.observe(\UIView.bounds, options: [.new], changeHandler: Self.sizeChangeHandler)
-            view.pinstack_kvohelper = KvoHelper(kvoHidden: refHidden, kvoSize: refSize)
+            let ref = view.observe(\UIView.isHidden, options: [.new], changeHandler: Self.hiddenChangeHandler)
+            view.pinstack_kvohelper = KvoHelper(observation: ref)
         }
     }
     
@@ -926,26 +916,6 @@ fileprivate class KvoHelper: NSObject {
         }
         if let sview = view.superview as? PinStackView,
            let _ = sview.itemForView(view)
-        {
-            sview.markDirty()
-        }
-    }
-    
-    /// only observ style .auto
-    private static func sizeChangeHandler(_ view: UIView, _ value: NSKeyValueObservedChange<CGRect>) {
-        guard let _ = view.pinstack_kvohelper else {
-            return
-        }
-        guard let sview = view.superview as? PinStackView,
-              sview.style == .auto,
-              let _ = sview.itemForView(view),
-              let oldValue = value.oldValue,
-              let newValue = value.newValue else
-        {
-            return
-        }
-        if (sview.axis == .horizontal && oldValue.size.width != newValue.size.width) ||
-            (sview.axis == .vertical && oldValue.size.height != newValue.size.height)
         {
             sview.markDirty()
         }
