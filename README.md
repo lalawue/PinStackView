@@ -6,18 +6,26 @@ PinStackView was a Frame base StackView relies on [PinLayout](https://github.com
 
 ## Features
 
-- can be used with manual layout, Autolayout 
+- can be used with manual layout, Autolayout
 - is a real view and only layout specified sub-views
 - has inner padding
 - has equal distribution like UIStackView
 - has auto style with dynamic length in axis direction
 - has grow/shrink
 - observ item layout properties
-- KVO item views 'isHidden', 'bounds.size'
+- KVO item views 'isHidden'
+
+## Install
+
+To integrate `PinStackView` into your Xcode project using CocoaPods, specify it in your Podfile:
+
+```
+    pod 'PinLayout'
+```
+
+Then, run `pod install`.
 
 ## Usage
-
-using cocoapods, import as local directory
 
 examples listed in project 'Views/' group
 
@@ -27,16 +35,18 @@ $ pod install
 $ open Example.xcworkspace
 ```
 
-## PinStackView 
+## PinStackView
 
 ### Interface
 
 - addItems(): add managed sub-views, return PinStackItemInfo for chained setting, you can addSubviews() and layout view by yourself
 - insertItem(): like addItems(), can defined sequence
 - removeItem(): remove managed sub-views, also removed from subviews
+- remakeItem(): replace with new item but did not change subview's sequence
 - itemForView(): get PinStackItemInfo from PinStackView after addItem() or insertItem()
 - define(): a sugar to chain items info definition
 - markDirty(): like setNeesLayout(), force layout in next view update
+- triggerNeedsLayout(): trigger subview's setNeedsLayout when PinStackView setNeedsLayout.
 
 ### Properties
 
@@ -64,9 +74,9 @@ PinStackItemInfo was each item's layout definition, you will get instance after 
 - minHeight(): min points or inner height ratio after padding, high priority than height()
 - size(): highest priority than width(), height(), max/min width & height, points or ratio after padding
 - alignSelf(): high priroty than PinStackView's alignment, only for this item
-- grow(): in .fixed style and .start / .end distribution, means when all items length less than container's length, the grow one will take all extra space with ratio
-- shrink(): in .fixed style and.start / .end distribution, means when all items length greater than container's length, then shrink one will shrink extra sapce whth ratio
-- reset(): reset to default
+- grow(): in .fixed style and .start / .end distribution, it means item using dynamic length in axis direction after all fixed items length acumulated; no meanings in .equal distribution or .auto style
+- shrink(): in .fixed style and.start / .end distribution, it means item using dynamic length in axis direction after all fixed items length acumulated; no meanings in .equal distribution or .auto style
+
 
 ## Coding Example
 
@@ -81,7 +91,7 @@ using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
         $0.spacing = 10
         $0.addItem(v1).left(20)
         $0.addItem(v2).size(20).shrik(2.0)
-        $0.addItem(v3).grow(1.0) // with ratio 1.0 / (1.0 + 2.0)
+        $0.addItem(v3).grow(1.0) // with grow ratio 1.0 / (1.0 + 2.0)
         $0.addItem(v4).size(30).grow(2.0).right(20)
     }
 ```
