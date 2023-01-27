@@ -375,6 +375,9 @@ public enum PinStackViewLayoutStyle {
 fileprivate struct DynamicSizeInfo {
     
     /// total length
+    let total: CGFloat
+    
+    /// fixed/extra length
     let extra: CGFloat
     
     /// total grow
@@ -585,14 +588,20 @@ open class PinStackView: UIView {
     
     /// fixed stack view, distributed as start, end, apply grow ratio
     private func fixedStartEnd(_ inner_width: CGFloat, _ inner_height: CGFloat) {
-        let tot_info = fixedSEApply(inner_width, inner_height, false, DynamicSizeInfo(extra: 0, grow: 0, shrink: 0))
-        let dynamic_length: CGFloat
+        let tot_info = fixedSEApply(inner_width, inner_height, false, DynamicSizeInfo(total: 0, extra: 0, grow: 0, shrink: 0))
+        let dynamic_total: CGFloat
+        let dynamic_extra: CGFloat
         if axis == .horizontal {
-            dynamic_length = inner_width - tot_info.extra
+            dynamic_total = inner_width - tot_info.total
+            dynamic_extra = inner_width - tot_info.extra
         } else {
-            dynamic_length = inner_height - tot_info.extra
+            dynamic_total = inner_height - tot_info.total
+            dynamic_extra = inner_height - tot_info.extra
         }
-        let dynamic_info = DynamicSizeInfo(extra: dynamic_length, grow: tot_info.grow, shrink: tot_info.shrink)
+        let dynamic_info = DynamicSizeInfo(total: dynamic_total,
+                                           extra: dynamic_extra,
+                                           grow: tot_info.grow,
+                                           shrink: tot_info.shrink)
         fixedSEApply(inner_width, inner_height, true, dynamic_info)
     }
     
@@ -617,6 +626,8 @@ open class PinStackView: UIView {
         }
 
         var tot_length = CGFloat(0)
+        var fixed_length = CGFloat(0)
+        
         var grow = CGFloat(0)
         var shrink = CGFloat(0)
         var begin = CGFloat(0)
@@ -663,6 +674,7 @@ open class PinStackView: UIView {
             grow += info._grow
             shrink += info._shrink
 
+            let is_fixed: Bool = (info._grow <= 0) && (info._shrink <= 0)
             let ox: CGFloat
             let oy: CGFloat
             
@@ -690,6 +702,7 @@ open class PinStackView: UIView {
                     in_startx -= item_width
                 }
                 tot_length += margin_left + margin_right + begin * spacing + size.width
+                fixed_length += margin_left + margin_right + begin * spacing + (is_fixed ? size.width : 0)
             } else {
                 if apply {
                     switch info._alignSelf ?? alignment {
@@ -706,11 +719,12 @@ open class PinStackView: UIView {
                     in_starty -= item_height
                 }
                 tot_length += margin_top + margin_bottom + begin * spacing + size.height
+                fixed_length += margin_top + margin_bottom + begin * spacing + (is_fixed ? size.height : 0)
             }
             begin = 1
         }
         // return total length, total grow
-        return DynamicSizeInfo(extra: tot_length, grow: grow, shrink: shrink)
+        return DynamicSizeInfo(total: tot_length, extra: fixed_length, grow: grow, shrink: shrink)
     }
     
     // MARK: - Auto
@@ -861,20 +875,20 @@ open class PinStackView: UIView {
                                         size: CGSize,
                                         info: PinStackItemInfo,
                                         dn_info: DynamicSizeInfo) -> CGSize {
-        if dn_info.extra > 0 && dn_info.grow > 0 && info._grow > 0 {
+        if dn_info.total > 0 && dn_info.grow > 0 && info._grow > 0 {
             let length = dn_info.extra * (info._grow / dn_info.grow)
             if axis == .horizontal {
-                return CGSize(width: size.width + length, height: size.height)
+                return CGSize(width: length, height: size.height)
             } else {
-                return CGSize(width: size.width, height: size.height + length)
+                return CGSize(width: size.width, height: length)
             }
         }
-        if dn_info.extra < 0 && dn_info.shrink > 0 && info._shrink > 0 {
+        if dn_info.total < 0 && dn_info.shrink > 0 && info._shrink > 0 {
             let length = dn_info.extra * (info._shrink / dn_info.shrink)
             if axis == .horizontal {
-                return CGSize(width: size.width + length, height: size.height)
+                return CGSize(width: length, height: size.height)
             } else {
-                return CGSize(width: size.width, height: size.height + length)
+                return CGSize(width: size.width, height: length)
             }
         }
         return size
