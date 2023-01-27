@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,36 +41,43 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Fixed Style"
+        switch section {
+        case 0: return "Fixed Style"
+        case 1: return "Auto Style"
+        default: return "Nested Example"
         }
-        return "Auto Style"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell()
-        if indexPath.section == 0 {
+        switch indexPath.section {
+        case 0:
             if indexPath.row == 0 {
                 cell.textLabel?.text = "distribution equal"
             } else {
                 cell.textLabel?.text = "distribution start / end"
             }
-        } else {
+        case 1:
             cell.textLabel?.text = "distribution start"
+        default:
+            cell.textLabel?.text = "nested views"
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc: UIViewController
-        if indexPath.section == 0 {
+        switch indexPath.section {
+        case 0:
             if indexPath.row == 0 {
                 vc = FixedEqualViewConrtroller()
             } else {
                 vc = FixedSEViewController()
             }
-        } else {
+        case 1:
             vc = AutoStartViewController()
+        default:
+            vc = NestedViewController()
         }
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
