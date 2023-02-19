@@ -425,6 +425,7 @@ open class PinStackView: UIView {
 
     /// callback after layout subviews for other normal subviews, true when size changed
     open var layoutCallback: ((PinStackView?, Bool) -> Void)?
+    fileprivate var oldFrameSize = CGSize.zero
     
     // MARK: -
     
@@ -519,10 +520,10 @@ open class PinStackView: UIView {
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        let size = self.frame.size
         layout()
         weak var weakSelf = self
-        layoutCallback?(weakSelf, self.frame.size != size)
+        layoutCallback?(weakSelf, frame.size != oldFrameSize)
+        oldFrameSize = frame.size
     }
     
     open override func sizeThatFits(_ size: CGSize) -> CGSize {

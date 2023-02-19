@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -44,7 +44,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case 0: return "Fixed Style"
         case 1: return "Auto Style"
-        default: return "Nested Example"
+        case 2: return "Nested Example"
+        default: return "Demo"
         }
     }
     
@@ -59,8 +60,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             }
         case 1:
             cell.textLabel?.text = "distribution start"
-        default:
+        case 2:
             cell.textLabel?.text = "nested views"
+        default:
+            cell.textLabel?.text = "login demo"
         }
         return cell
     }
@@ -76,8 +79,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             }
         case 1:
             vc = AutoStartViewController()
-        default:
+        case 2:
             vc = NestedViewController()
+        default:
+            vc = LoginDemoViewController()
         }
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

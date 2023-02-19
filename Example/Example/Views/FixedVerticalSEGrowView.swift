@@ -36,7 +36,7 @@ class FixedVerticalSEGrowView: UIView {
         $0.distribution = .end
         $0.spacing = 10
         $0.addItem(v1).top(10)
-        $0.addItem(v2).size(32).grow(1)
+        $0.addItem(v2).width(32).height(32).grow(1)
         $0.addItem(v3).bottom(10)
     }
     

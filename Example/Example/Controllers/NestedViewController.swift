@@ -60,7 +60,7 @@ class NestedViewController: BaseViewController {
             .height(18)
             .bottom(2)
             .refresh()
-        // ---
+        // --- seperator view
         $0.addItem(UIView().then {
             $0.backgroundColor = .black
         }).height(0.5)
@@ -72,7 +72,7 @@ class NestedViewController: BaseViewController {
         
         scrollview.addSubview(stackView)
         
-        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             self?.updateTimer()
         })
     }
