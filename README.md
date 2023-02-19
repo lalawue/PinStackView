@@ -20,7 +20,7 @@ PinStackView was a Frame base StackView relies on [PinLayout](https://github.com
 To integrate `PinStackView` into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```
-    pod 'PinLayout'
+    pod 'PinStackView'
 ```
 
 Then, run `pod install`.
