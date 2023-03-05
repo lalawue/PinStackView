@@ -96,6 +96,7 @@ using [Then](https://github.com/devxoul/Then/) from Suyeol Jeon
     }
 ```
 
-## Demo GIF
+## Demo
 
-![image](https://github.com/lalawue/PinStackView/blob/master/Images/demo.gif)
+https://user-images.githubusercontent.com/1954838/222943971-19df2826-abc2-409a-9fde-ebd2271e4a2e.mp4
+
