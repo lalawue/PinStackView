@@ -94,9 +94,9 @@ class LoginDemoViewController: UIViewController {
         for btn in [signInButton, signUpButton] {
             btn.addTarget(self, action: #selector(onTapSignInUp(_:)), for: .touchUpInside)
         }
-        for btn in [cancelButton, confirmButton] {
-            btn.addTarget(self, action: #selector(onTapPop), for: .touchUpInside)
-        }
+//        for btn in [cancelButton, confirmButton] {
+//            btn.addTarget(self, action: #selector(onTapPop), for: .touchUpInside)
+//        }
     }
     
     override func viewDidLayoutSubviews() {

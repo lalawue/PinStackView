@@ -21,7 +21,6 @@
 		C198F81D267DF42C009B5C54 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F81C267DF42C009B5C54 /* ViewController.swift */; };
 		C198F822267DF42E009B5C54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C198F821267DF42E009B5C54 /* Assets.xcassets */; };
 		C198F825267DF42E009B5C54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C198F823267DF42E009B5C54 /* LaunchScreen.storyboard */; };
-		C198F838267DF5DF009B5C54 /* AutoSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F830267DF5DF009B5C54 /* AutoSizeView.swift */; };
 		C198F839267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F831267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift */; };
 		C198F83A267DF5DF009B5C54 /* FixedVerticalEqualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */; };
 		C198F83B267DF5DF009B5C54 /* FixedHorizontalSEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */; };
@@ -53,7 +52,6 @@
 		C198F821267DF42E009B5C54 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C198F824267DF42E009B5C54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C198F826267DF42E009B5C54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C198F830267DF5DF009B5C54 /* AutoSizeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoSizeView.swift; sourceTree = "<group>"; };
 		C198F831267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHorizontalSESpacing.swift; sourceTree = "<group>"; };
 		C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedVerticalEqualView.swift; sourceTree = "<group>"; };
 		C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedHorizontalSEView.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		C198F82E267DF5AF009B5C54 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C198F830267DF5DF009B5C54 /* AutoSizeView.swift */,
 				C198F837267DF5DF009B5C54 /* FixedHorizontalEqualView.swift */,
 				C198F832267DF5DF009B5C54 /* FixedVerticalEqualView.swift */,
 				C198F833267DF5DF009B5C54 /* FixedHorizontalSEView.swift */,
@@ -290,7 +287,6 @@
 				C198F839267DF5DF009B5C54 /* FixedHorizontalSESpacing.swift in Sources */,
 				C198F83D267DF5DF009B5C54 /* AutoVerticalView.swift in Sources */,
 				2ADC539B2984180D00A0136F /* NestedViewController.swift in Sources */,
-				C198F838267DF5DF009B5C54 /* AutoSizeView.swift in Sources */,
 				2A2681D329575603000F83E2 /* FixedVerticalSEShrinkView.swift in Sources */,
 				C1456E44267DFDA900C4B249 /* FixedSEViewController.swift in Sources */,
 				C198F83A267DF5DF009B5C54 /* FixedVerticalEqualView.swift in Sources */,

@@ -26,11 +26,10 @@ class BaseViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         let height = scrollview.subviews
-            .filter { $0.subviews.first?.isKind(of: PinStackView.self) ?? false }
+            .filter { $0.isKind(of: PinStackView.self) }
             .last?.frame.maxY ?? 0
         scrollview.contentSize = CGSize(width: view.frame.width,
-                                        height: height + 30)
+                                        height: height + 60)
     }
 }

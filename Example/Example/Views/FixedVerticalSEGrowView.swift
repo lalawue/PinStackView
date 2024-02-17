@@ -8,7 +8,8 @@
 import UIKit
 import PinStackView
 
-class FixedVerticalSEGrowView: UIView {
+/// fixed vertical start/end grow exmaple view
+class FixedVerticalSEGrowView: PinStackView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
@@ -29,43 +30,38 @@ class FixedVerticalSEGrowView: UIView {
         $0.setTitle("ClickMe", for: .normal)
     }
     
-    lazy var stackView = PinStackView().then {
-        $0.style = .fixed
-        $0.axis = .vertical
-        $0.alignment = .center
-        $0.distribution = .end
-        $0.spacing = 10
-        $0.addItem(v1).top(10)
-        $0.addItem(v2).width(32).height(32).grow(1)
-        $0.addItem(v3).bottom(10)
-    }
-    
-    fileprivate var changed = false
+    fileprivate var changedFlag = false
     
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
+        self.do {
+            $0.style = .fixed
+            $0.axis = .vertical
+            $0.alignment = .center
+            $0.distribution = .end
+            $0.spacing = 10
+            $0.addItem(v1).top(10)
+            $0.addItem(v2).width(32).height(32).grow(1)
+            $0.addItem(v3).bottom(10)
+        }
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        DemoUIHelper.appendInfo(view: stackView, name: name, spancer: "    ")
+        DemoUIHelper.appendInfo(view: self, name: name, spancer: "    ")
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.pin.all()
-    }
-    
     @objc private func onTap() {
-        changed = !changed
-        if changed {
-            stackView.itemForView(v2)?.grow(0)
+        changedFlag = !changedFlag
+        if changedFlag {
+            self.itemForView(v2)?.grow(0)
         } else {
-            stackView.itemForView(v2)?.grow(1)
+            self.itemForView(v2)?.grow(1)
         }
     }
 }

@@ -8,7 +8,8 @@
 import UIKit
 import PinStackView
 
-class AutoVerticalView: UIView {
+/// auto vertical exmaple view
+class AutoVerticalView: PinStackView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
@@ -30,36 +31,28 @@ class AutoVerticalView: UIView {
         $0.backgroundColor = UIColor.cyan
     }
     
-    var changed = 0
-    
-    lazy var stackView = PinStackView().then {
-        $0.style = .auto
-        $0.axis = .vertical
-        $0.alignment = .center
-        $0.distribution = .start
-        $0.spacing = 10
-        $0.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        $0.addItem(v1)
-        $0.addItem(v2).size(25)
-        $0.addItem(v3).alignSelf(.end)
-        $0.addItem(v4).size(40)
-    }
+    var changedFlag = 0
     
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
-        v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        stackView.layoutCallback = { [weak self] _, changed in
-            guard let sv = self?.superview, changed else {
-                return
-            }
-            let f = sv.bounds
-            sv.bounds = CGRect(x: f.origin.x, y: f.origin.y, width: f.size.width, height: f.size.height + 0.001)
-            sv.bounds = f
+        self.do {
+            $0.style = .auto
+            $0.axis = .vertical
+            $0.alignment = .center
+            $0.distribution = .start
+            $0.spacing = 10
+            $0.padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            $0.addItem(v1)
+            $0.addItem(v2).size(25)
+            $0.addItem(v3).alignSelf(.end)
+            $0.addItem(v4).size(40)
         }
-        DemoUIHelper.appendInfo(view: stackView, name: name)
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
+        v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        DemoUIHelper.appendInfo(view: self, name: name)
     }
     
     required init?(coder: NSCoder) {
@@ -67,25 +60,16 @@ class AutoVerticalView: UIView {
     }
 
     @objc private func onTap() {
-        if changed > 0 {
-            if changed > 1 {
-                changed = 1
-                stackView.itemForView(v3)?.alignSelf(.end)
+        if changedFlag > 0 {
+            if changedFlag > 1 {
+                changedFlag = 1
+                self.itemForView(v3)?.alignSelf(.end)
             } else {
-                changed = 2
-                stackView.itemForView(v3)?.alignSelf(.start)
+                changedFlag = 2
+                self.itemForView(v3)?.alignSelf(.start)
             }
         } else {
             v2.isHidden = !v2.isHidden
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.stackView.pin.horizontally().sizeToFit(.width)
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return stackView.sizeThatFits(size)
     }
 }

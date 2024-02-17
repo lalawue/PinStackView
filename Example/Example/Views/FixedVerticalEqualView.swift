@@ -8,9 +8,10 @@
 import UIKit
 import PinStackView
 
-class FixedVerticalEqualView: UIView {
+/// fixed vertical equal exmaple view
+class FixedVerticalEqualView: PinStackView {
     
-    let v1 = AutoSizeView().then {
+    let v1 = UIView().then {
         $0.backgroundColor = UIColor.red
     }
     
@@ -22,28 +23,28 @@ class FixedVerticalEqualView: UIView {
         $0.setTitleColor(.black, for: .normal)
     }
     
-    let v3 = AutoSizeView().then {
+    let v3 = UIView().then {
         $0.isHidden = true
         $0.backgroundColor = UIColor.brown
     }
     
-    lazy var stackView = PinStackView().then {
-        $0.style = .fixed
-        $0.axis = .vertical
-        $0.alignment = .center
-        $0.distribution = .equal
-        $0.addItem(v1).width(100)
-        $0.addItem(v2).grow(0.4)
-        $0.addItem(v3).width(100)
-    }
-    
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
+        self.do {
+            $0.style = .fixed
+            $0.axis = .vertical
+            $0.alignment = .center
+            $0.distribution = .equal
+            $0.addItem(v1).width(100)
+            $0.addItem(v2).grow(0.4)
+            $0.addItem(v3).width(100)
+        }
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
         v2.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        DemoUIHelper.appendInfo(view: stackView, name: name)
+        DemoUIHelper.appendInfo(view: self, name: name)
     }
     
     required init?(coder: NSCoder) {
@@ -52,10 +53,5 @@ class FixedVerticalEqualView: UIView {
     
     @objc private func onTap() {
         v3.isHidden = !v3.isHidden
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.pin.all()
     }
 }

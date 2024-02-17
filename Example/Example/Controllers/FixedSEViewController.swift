@@ -10,12 +10,12 @@ import UIKit
 class FixedSEViewController: BaseViewController {
     
     lazy var v1 = FixedHorizontalSEView(frame: .zero, name: "distribution start with maxWidth").then {
-        $0.stackView.itemForView($0.v1)?.maxWidth(50)
+        $0.itemForView($0.v1)?.maxWidth(50)
     }
 
     lazy var v2 = FixedHorizontalSEView(frame: .zero, name: "distribution end with maxHeight").then {
-        $0.stackView.distribution = .end
-        $0.stackView.itemForView($0.v1)?.maxHeight(30)
+        $0.distribution = .end
+        $0.itemForView($0.v1)?.maxHeight(30)
     }
 
     lazy var v3 = FixedHorizontalSESpacing(frame: .zero, name: "grow equal")

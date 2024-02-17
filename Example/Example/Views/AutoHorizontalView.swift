@@ -8,7 +8,8 @@
 import UIKit
 import PinStackView
 
-class AutoHorizontalView: UIView {
+/// auto horizontal exmaple view
+class AutoHorizontalView: PinStackView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
@@ -31,35 +32,29 @@ class AutoHorizontalView: UIView {
         $0.backgroundColor = UIColor.cyan
     }
     
-    var changeSize = 0
+    var changedFlag = 0
     
-    lazy var stackView = PinStackView().then {
-        $0.style = .auto
-        $0.axis = .horizontal
-        $0.alignment = .center
-        $0.distribution = .start
-        $0.spacing = 10
-        $0.addItem(v1).left(20)
-        $0.addItem(v2).size(20)
-        $0.addItem(v3)
-        $0.addItem(v4).right(20)
-    }
+    var onTapButtonCallback: (() -> Void)? = nil
     
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
-        v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        stackView.layoutCallback = { [weak self] _, changed in
-            guard let sv = self?.superview, changed else {
-                return
-            }
-            let f = sv.bounds
-            sv.bounds = CGRect(x: f.origin.x, y: f.origin.y, width: f.size.width, height: f.size.height + 0.001)
-            sv.bounds = f
+        self.do {
+            $0.style = .auto
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.distribution = .start
+            $0.spacing = 10
+            $0.addItem(v1).left(20)
+            $0.addItem(v2).size(20)
+            $0.addItem(v3)
+            $0.addItem(v4).right(20)
         }
-        DemoUIHelper.appendInfo(view: stackView, name: name)
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
+        v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        DemoUIHelper.appendInfo(view: self, name: name)
     }
     
     required init?(coder: NSCoder) {
@@ -67,25 +62,20 @@ class AutoHorizontalView: UIView {
     }
     
     @objc private func onTap() {
-        if changeSize > 0 {
-            if changeSize > 1 {
-                changeSize = 1
-                v4.frame = CGRect(origin: .zero, size: CGSize(width: 90, height: v4.frame.height))
-            } else {
-                changeSize = 2
-                v4.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: v4.frame.height))
-            }
+        if let cb = onTapButtonCallback {
+            cb()
         } else {
-            v4.isHidden = !v4.isHidden
+            if changedFlag > 0 {
+                if changedFlag > 1 {
+                    changedFlag = 1
+                    v4.frame = CGRect(origin: .zero, size: CGSize(width: 90, height: v4.frame.height))
+                } else {
+                    changedFlag = 2
+                    v4.frame = CGRect(origin: .zero, size: CGSize(width: 30, height: v4.frame.height))
+                }
+            } else {
+                v4.isHidden = !v4.isHidden
+            }
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.pin.vertically().sizeToFit(.height)
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return stackView.sizeThatFits(size)
     }
 }

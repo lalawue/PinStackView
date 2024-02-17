@@ -8,7 +8,8 @@
 import UIKit
 import PinStackView
 
-class FixedHorizontalSESpacing: UIView {
+/// fixed horizontal start/end exmaple view
+class FixedHorizontalSESpacing: PinStackView {
     
     let v1 = UIView().then {
         $0.backgroundColor = UIColor.red
@@ -22,31 +23,26 @@ class FixedHorizontalSESpacing: UIView {
         $0.backgroundColor = UIColor.brown
     }
     
-    lazy var stackView = PinStackView().then {
-        $0.style = .fixed
-        $0.axis = .horizontal
-        $0.alignment = .center
-        $0.distribution = .start
-        $0.spacing = 10
-        $0.addItem(v1).height(40).grow(1.0).left(10)
-        $0.addItem(v2).height(40).grow(1.0)
-        $0.addItem(v3).height(40).grow(1.0).right(10)
-    }
-    
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
-        DemoUIHelper.appendInfo(view: stackView, name: name, spancer: "    ")
+        self.do {
+            $0.style = .fixed
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.distribution = .start
+            $0.spacing = 10
+            $0.addItem(v1).height(40).grow(1.0).left(10)
+            $0.addItem(v2).height(40).grow(1.0)
+            $0.addItem(v3).height(40).grow(1.0).right(10)
+        }
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
+        DemoUIHelper.appendInfo(view: self, name: name, spancer: "    ")
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.pin.all()
     }
 }

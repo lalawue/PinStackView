@@ -860,7 +860,7 @@ open class PinStackView: UIView {
         let h = info.value(info._height, oheight)
         let unit_size = CGSize(width: w ?? uwidth, height: h ?? uheight)
         let s = view.sizeThatFits(unit_size)
-        if s.equalTo(.zero) {
+        if self.distribution == .equal && s.equalTo(.zero) {
             return unit_size
         }
         var ow = s.width

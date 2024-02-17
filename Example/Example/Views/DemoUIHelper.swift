@@ -11,7 +11,8 @@ class DemoUIHelper {
     
     private init() {
     }
-    
+
+    /// append view's info
     static func appendInfo(view: PinStackView, name: String, spancer: String = "\n") {
         
         let nameLabel = UILabel().then {

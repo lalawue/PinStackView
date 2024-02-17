@@ -8,14 +8,15 @@
 import UIKit
 import PinStackView
 
-class FixedHorizontalEqualView: UIView {
+/// fixed horizontal equal exmaple view
+class FixedHorizontalEqualView: PinStackView {
     
     let v1 = UILabel().then {
         $0.backgroundColor = UIColor.red
         $0.text = "Hello"
     }
     
-    let v2 = AutoSizeView().then {
+    let v2 = UIView().then {
         $0.backgroundColor = UIColor.green
     }
     
@@ -26,28 +27,28 @@ class FixedHorizontalEqualView: UIView {
         $0.setTitle("Click...............", for: .normal)
     }
     
-    let v4 = AutoSizeView().then {
+    let v4 = UIView().then {
         $0.backgroundColor = UIColor.green
-    }
-    
-    lazy var stackView = PinStackView().then {
-        $0.style = .fixed
-        $0.axis = .horizontal
-        $0.alignment = .center
-        $0.distribution = .equal
-        $0.addItem(v1)
-        $0.addItem(v2)
-        $0.addItem(v3)
-        $0.addItem(v4)
     }
     
     init(frame: CGRect, name: String) {
         super.init(frame: frame)
-        addSubview(stackView)
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.gray.cgColor
+        self.do {
+            $0.style = .fixed
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.distribution = .equal
+            $0.addItem(v1)
+            $0.addItem(v2)
+            $0.addItem(v3)
+            $0.addItem(v4)
+        }
+        self.layer.do {
+            $0.borderWidth = 1
+            $0.borderColor = UIColor.gray.cgColor
+        }
         v3.addTarget(self, action: #selector(onTap), for: .touchUpInside)
-        DemoUIHelper.appendInfo(view: stackView, name: name)
+        DemoUIHelper.appendInfo(view: self, name: name)
     }
     
     required init?(coder: NSCoder) {
@@ -61,10 +62,5 @@ class FixedHorizontalEqualView: UIView {
             v1.text = "Hello"
         }
         v4.isHidden = !v4.isHidden
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        stackView.pin.all()
     }
 }

@@ -1,6 +1,6 @@
 PODS:
   - PinLayout (1.9.3)
-  - PinStackView (0.2.20221225):
+  - PinStackView (0.4.20230219):
     - PinLayout
 
 DEPENDENCIES:
@@ -16,8 +16,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   PinLayout: 4d8733121f8687edcc8f00c19bf1379d12808767
-  PinStackView: bb229cac8e47b2fbcba7c13628c8bb87510dfd2a
+  PinStackView: 8b13e9d8ad77d6def1dbb0ed5731c97ef045ef84
 
 PODFILE CHECKSUM: ec72c06753d333ab154def7a84faab58e72930a7
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
