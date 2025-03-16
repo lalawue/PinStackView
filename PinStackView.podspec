@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "PinStackView"
-  spec.version      = "0.5.20240217"
+  spec.version      = "0.6.20250316"
   spec.summary      = "Frame base StackView relies on PinLayout"
   spec.description  = "Frame base StackView relies on PinLayout, with inner padding, equal distribution, dynamic axis length, grow/shrink items capability"
   spec.platform     = :ios
@@ -24,7 +24,7 @@ Pod::Spec.new do |spec|
   spec.source_files  = 'PinStackView/Classes/**/*'
 
   spec.ios.deployment_target = '9.0'
-  spec.swift_version = '4.2'
+  spec.swift_version = '5.0'
 
   spec.ios.dependency 'PinLayout'
 end

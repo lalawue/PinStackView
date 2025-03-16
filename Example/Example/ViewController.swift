@@ -34,10 +34,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        switch section {
+        case 0:
             return 2
+        case 1:
+            return 1
+        case 2:
+            return 1
+        case 3:
+            return 2
+        default:
+            return 0
         }
-        return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -62,8 +70,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.text = "distribution start"
         case 2:
             cell.textLabel?.text = "nested views"
+        case 3:
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "login demo"
+            } else {
+                cell.textLabel?.text = "scroll view"
+            }
         default:
-            cell.textLabel?.text = "login demo"
+            break
         }
         return cell
     }
@@ -81,8 +95,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             vc = AutoStartViewController()
         case 2:
             vc = NestedViewController()
+        case 3:
+            if indexPath.row == 0 {
+                vc = LoginDemoViewController()
+            } else {
+                vc = ScrollViewDemoViewController()
+            }
         default:
-            vc = LoginDemoViewController()
+            vc = UIViewController()
         }
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
